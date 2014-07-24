@@ -1,0 +1,40 @@
+{% extends "includes/rest_master.html" %}
+{% block body %}
+<!--Land Sports start-->
+<div class="container2">
+    <div class="container">
+		{% for category in categories %}
+		<div class="row">
+    		<div class="col-lg-12">
+				<h3> {{ category }} </h3> 
+    		</div>
+    	</div>
+
+		<div class="row-fluid">			             
+			{% for post in posts %}
+			{% if post.category == category %}
+			<div class="col-sm-4">
+            	<div class="thumbnail">
+                	<div class="caption">
+						<form name="menfrm" action="" method="post">
+							<h4 class="">
+								<a href="/{{url_prefix}}/{{ post.id }}">
+									<font color="white">{{ post.name }}</font>
+								</a>
+							</h4>
+						</form>
+                	</div>
+					{% if post.images|length > 0 %}
+					<img src="/files/img/{{ post.images[0].image._id }}" height="200" alt="..." class="">
+					{% else %}
+					<img src="http://placehold.it/300x200" height="200" alt="..." class="">
+					{% endif %}
+            	</div>
+        	</div>
+			{% endif %}
+			{% endfor %}
+		</div>
+		{% endfor %}
+    </div>
+</div>			
+{% endblock %}

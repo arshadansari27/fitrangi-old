@@ -1,0 +1,13 @@
+<div class="well">
+	<h4>Comment:</h4>
+   	<form role="form">
+   		<div class="form-group">
+        	<textarea class="form-control" rows="3"></textarea>
+    	</div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+	{% for comment in comments %}
+	<h4>{{ comment.created_by }} <small> {{ comment.created_at }}</small></h4>
+	<p>{{ comment.content }}</p>
+	{% endfor %}
+</div>

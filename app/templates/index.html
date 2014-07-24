@@ -1,0 +1,128 @@
+{% extends "includes/index_master.html" %}
+{% block body %}
+     <!--Popular Destination start-->
+<div class="container1">
+    <div class="container">
+        
+    <div class="row">
+    <div class="col-lg-12 text-center">
+        <h2> Popular Destination </h2>
+        <hr class="star-primary"></hr>
+    </div>
+    </div>
+				
+      <div class="row">
+		{% for destination in destinations %}
+		<div class="col-sm-4">
+            <div class="thumbnail">
+                <div class="caption">
+					<h4 class=""><a href="/destinations/{{destination.id}}"><font color="white">{{ destination.name }}</font></a></h4>
+                    <!--p class=""><a href="" class="label label-danger" rel="tooltip" title="Share">Share</a>
+                        <a href="" class="label label-default" rel="tooltip" title="Like">Like</a>
+                    </p-->
+                </div>
+				{% if destination.images|length > 0 %}
+					<img src="/files/img/{{ destination.images[0].image._id }}" height="200" alt="..." class="">
+				{% else %}
+					<img src="http://placehold.it/300x200" height="200" alt="..." class="">
+				{% endif %}
+
+            </div>
+        </div>
+		{%endfor %}
+        
+    </div>
+	<!--Happening activity start-->
+	<div class="row">
+    	<div class="col-lg-12 text-center">
+        	<h2> Happening Activity  </h2>
+        	<hr class="star-primary"></hr>
+    	</div>
+    </div>
+    <div class="row">	         
+		{% for activity in activities %}
+		<div class="col-sm-4">
+            <div class="thumbnail">
+                <div class="caption">
+					<h4 class=""><a href="/activities/{{activity.id}}"><font color="white">{{ activity.name }}</font></a></h4>
+                    <!--p class=""><a href="" class="label label-danger" rel="tooltip" title="Share">Share</a>
+                        <a href="" class="label label-default" rel="tooltip" title="Like">Like</a>
+                    </p-->
+                </div>
+				{% if activity.images|length > 0 %}
+					<img src="/files/img/{{ activity.images[0].image._id }}" height="200" alt="..." class="">
+				{% else %}
+					<img src="http://placehold.it/300x200" height="200" alt="..." class="">
+				{% endif %}
+
+            </div>
+        </div>
+		{%endfor %}
+
+    </div>
+	<!--Great Stories from our blog Start-->
+
+	
+	<div class="row">
+    	<div class="col-lg-12 text-center">
+        	<h2> Great Stories From Our Blog </h2>
+        	<hr class="star-primary"></hr>
+    	</div>
+    </div>
+    <div class="row">	         
+		{% for blog in blogs %}
+		<div class="col-sm-4">
+            <div class="thumbnail">
+                <div class="caption">
+					<h4 class=""><a href="/blogs/{{blog.id}}"><font color="white">{{ blog.name }}</font></a></h4>
+                    <!--p class=""><a href="" class="label label-danger" rel="tooltip" title="Share">Share</a>
+                        <a href="" class="label label-default" rel="tooltip" title="Like">Like</a>
+                    </p-->
+                </div>
+				{% if blog.images|length > 0 %}
+					<img src="/files/img/{{ blog.images[0].image._id }}" height="200" alt="..." class="">
+				{% else %}
+					<img src="http://placehold.it/300x200" height="200" alt="..." class="">
+				{% endif %}
+
+            </div>
+        </div>
+		{%endfor %}
+
+    </div>
+      
+	<!--Gears for you Start-->
+	<div class="row">
+    	<div class="col-lg-12 text-center">
+        	<h2> Gears For Your </h2>
+        	<hr class="star-primary"></hr>
+    	</div>
+    </div>
+    <div class="row">	         
+    {% for dealer in dealers %}
+		<div class="col-sm-4">
+            <div class="thumbnail">
+                <div class="caption">
+					<h4 class=""><a href="/dealers/{{dealer.id}}"><font color="white">{{ dealer.name }}</font></a></h4>
+                    <!--p class=""><a href="" class="label label-danger" rel="tooltip" title="Share">Share</a>
+                        <a href="" class="label label-default" rel="tooltip" title="Like">Like</a>
+                    </p-->
+                </div>
+				{% if dealer.images|length > 0 %}
+					<img src="/files/img/{{ dealer.images[0].image._id }}" height="200" alt="..." class="">
+				{% else %}
+					<img src="http://placehold.it/300x200" height="200" alt="..." class="">
+				{% endif %}
+
+            </div>
+        </div>
+		{%endfor %}
+	</div>
+
+    </div><!--/row -->
+
+</div>
+</div> <!-- end container -->
+
+
+{% endblock %}

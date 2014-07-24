@@ -1,0 +1,23 @@
+README
+======
+
+To install dependencies
+-----------------------
+1. sudo pip install -r requirements.txt
+
+if pip is not install then run: 
+	sudo easy_install pip 
+and then try the step 1 again.
+
+2. sudo pip install PIL --allow-external PIL --allow-unverified PIL
+
+go to dropbox folder and inside the fitrangi (shared) folder. where you will see dump file
+there run mongorestore command
+
+
+To Run the server
+-----------------
+python manage.py runserver
+
+Go to [http://localhost:5000]
+

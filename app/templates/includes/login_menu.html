@@ -1,0 +1,5 @@
+{% if g.user and g.user.name %}
+	<a href="/logout" class="btn btn-link">{{ g.user.name }} | Logout </a>&nbsp;&nbsp;
+{% else %}
+	<a id="btn-login" href="/login" class="btn btn-info navbar-btn">Login <i class="glyphicon glyphicon-user"></i> </a>
+{% endif %}
