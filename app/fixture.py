@@ -66,8 +66,8 @@ def db_fixture(local):
         images = []
         if d.get('image', None):
             image_path = d['image']
-            name = unicode(image_path.split('/')[-1]).encode('utf-8')
-            print "*" * 80, '\n', image_path, '\n', name, '\n', "*" * 80
+            print "I:", image_path
+            name = unicode(str(image_path.split('/')[-1])).encode('utf-8')
             _name = hashlib.md5(name).hexdigest()
             new_name =  os.getcwd() + '/app/assets/files/media/images/%s' % _name
             images.append('/assets/files/media/images/%s' % _name)
@@ -79,4 +79,3 @@ def db_fixture(local):
         if __posttype == 'PROFILE' and user is not None:
             user.profile = post
             user.save()
-                    
