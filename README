@@ -1,8 +1,8 @@
-README
-======
+#Fitrangi source
 
-To install dependencies
------------------------
+##README
+
+###To install dependencies
 1. sudo pip install -r requirements.txt
 
 if pip is not install then run: 
@@ -10,12 +10,11 @@ if pip is not install then run:
 and then try the step 1 again.
 
 
-To Setup the database (Make sure the mongodb is installed on local)
--------------------------------------------------------------------
+###To Setup the database (Make sure the mongodb is installed on local)
 python manage.py db_fixture -l
 
 
-To Run the server
+###To Run the server
 -----------------
 python manage.py runserver
 
