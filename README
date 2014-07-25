@@ -9,10 +9,10 @@ if pip is not install then run:
 	sudo easy_install pip 
 and then try the step 1 again.
 
-2. sudo pip install PIL --allow-external PIL --allow-unverified PIL
 
-go to dropbox folder and inside the fitrangi (shared) folder. where you will see dump file
-there run mongorestore command
+To Setup the database (Make sure the mongodb is installed on local)
+-------------------------------------------------------------------
+python manage.py db_fixture -l
 
 
 To Run the server

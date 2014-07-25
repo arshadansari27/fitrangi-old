@@ -1,5 +1,5 @@
 from docutil import *
-import os
+import os, simplejson as json
 
 _file = '/Users/arshad/Dropbox/ARSHAD @ FITRANGI/Fitrangi.com DATABASE/'
 
@@ -180,7 +180,16 @@ def __load_dealers():
         data[key]['type'] = 'DEALER'
     return data
    
-def load_all():
+def load_all(local):
+    _data = None
+    if local:
+        try:
+            with open('alldata.json', 'r') as _f:
+                _data = json.loads(_f.read())
+        except IOError, e:
+            _data = None
+    if _data:
+        return _data
     data = []
     get_types = ['articles', 'destinations', 'activities', 'dealers', 'organisers'] 
     #get_types = ['dealers', 'organisers'] 
@@ -188,6 +197,8 @@ def load_all():
         print "Getting", k
         v = load_one(k)
         data.extend(v)
+    with open('alldata.json', 'w') as _f:
+        _f.write(json.dumps(data))
     return data
 
 if __name__ == '__main__':

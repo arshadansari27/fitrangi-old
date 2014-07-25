@@ -3,7 +3,7 @@ from app.models import *
 from app import db
 from BeautifulSoup import BeautifulSoup
 import urllib2
-import os, shutil, sys
+import os, shutil, sys, hashlib
 import StringIO, time
 from PIL import Image as PILImage
 from scripts.db_load import load_all
@@ -11,8 +11,8 @@ from mongoengine import Q
 import mongoengine
 
 
-def db_fixture():
-    data = load_all()
+def db_fixture(local):
+    data = load_all(local)
     admin_type = UserType.objects(name__iexact="ADMIN").first()
     if not User.objects(email__iexact='arshadansari27@gmail.com').first():
         admin = User(name='Arshad Ansari', email='arshadansari27@gmail.com', password='testing', user_type=admin_type)
@@ -66,10 +66,14 @@ def db_fixture():
         images = []
         if d.get('image', None):
             image_path = d['image']
-            name = image_path.split('/')[-1] 
+            name = unicode(image_path.split('/')[-1]).encode('utf-8')
             print "*" * 80, '\n', image_path, '\n', name, '\n', "*" * 80
-            
-            images.append('/Users/arshad/Workspace/personal/fitrangi/app/assets/files/media/images/%s' % name)
+            _name = hashlib.md5(name).hexdigest()
+            new_name =  os.getcwd() + '/app/assets/files/media/images/%s' % _name
+            images.append('/assets/files/media/images/%s' % _name)
+            if not local or not os.path.exists(new_name):
+                shutil.copy(image_path, new_name)
+
         post.images = [_j for _j in images]
         post.save()
         if __posttype == 'PROFILE' and user is not None:

@@ -21,6 +21,7 @@ class Node(db.Document):
 class Tag(Node):
     name        = db.StringField(required=True)
     category    = db.StringField(required=True)
+    parent      = db.ReferenceField('Tag')
 
     def __unicode__(self):
         return "%s, %s" % (self.name, self.category)
@@ -153,77 +154,94 @@ for v in USER_TYPE:
     if UserType.objects(name__iexact=v):
         continue
     UserType(name=v).save()
-    print UserType.objects(name__iexact=v)
+    print UserType.objects(name__iexact=v).first()
 print 'User Types', len(UserType.objects.all())
 
 for v in POST_TYPE:
     if PostType.objects(name__iexact=v):
         continue
     PostType(name=v).save()
-    print PostType.objects(name__iexact=v)
+    print PostType.objects(name__iexact=v).first()
 print 'Post Types', len(PostType.objects.all())
 
 for v in PRODUCT_TYPE:
     if ProductType.objects(name__iexact=v):
         continue
     ProductType(name=v).save()
-    print ProductType.objects(name__iexact=v)
+    print ProductType.objects(name__iexact=v).first()
 print 'Product Types', len(ProductType.objects.all())
 
 
-TAGS = {
-        "Rescuer"                       : "SKILLS",
-        "Trainer"                       : "SKILLS",
-        "LAND SPORTS"                   : "ACTIVITY",
-        "OTHER SPORTS"                  : "ACTIVITY",
-        "SKY - FLY"                     : "ACTIVITY",
-        "SNOW - FLOW"                   : "ACTIVITY",
-        "TRAVELLING & SIGHTSEEING"      : "ACTIVITY",
-        "WATER - WONDERS"               : "ACTIVITY",
-        "Export"                        : "ARTICLES",
-        "Informative"                   : "ARTICLES",
-        "Top 5 Series"                  : "ARTICLES",
-        "Camping"                       : "LAND SPORTS",
-        "Cycling-Biking"                : "LAND SPORTS",
-        "Marathons"                     : "LAND SPORTS",
-        "Mountaineering"                : "LAND SPORTS",
-        "Off-beat Activities"           : "LAND SPORTS",
-        "Rappelling & Valley Crossing"  : "LAND SPORTS",
-        "Rock Climbing"                 : "LAND SPORTS",
-        "Trekking & Hiking"             : "LAND SPORTS",
-        "Horse Riding"                  : "OTHER SPORTS",
-        "Stargazing"                    : "OTHER SPORTS",
-        "Zorbing"                       : "OTHER SPORTS",
-        "Bungee jumping"                : "SKY - FLY",
-        "Hang Gliding"                  : "SKY - FLY",
-        "Hot Air Ballooning"            : "SKY - FLY",
-        "Para Motoring"                 : "SKY - FLY",
-        "Paragliding"                   : "SKY - FLY",
-        "Parasailing"                   : "SKY - FLY",
-        "Sky Diving"                    : "SKY - FLY",
-        "Zip Line"                      : "SKY - FLY",
-        "Skiing & Snowboarding"         : "SNOW - FLOW",
-        "Architecture Monuments"        : "TRAVELLING & SIGHTSEEING",
-        "Beaches"                       : "TRAVELLING & SIGHTSEEING",
-        "Forts & Caves"                 : "TRAVELLING & SIGHTSEEING",
-        "Hill stations"                 : "TRAVELLING & SIGHTSEEING",
-        "Places to Visit"               : "TRAVELLING & SIGHTSEEING",
-        "Theme Parks"                   : "TRAVELLING & SIGHTSEEING",
-        "Wildlife Sanctuaries & Safaris": "TRAVELLING & SIGHTSEEING",
-        "Canyoning"                     : "WATER - WONDERS",
-        "Kayaking"                      : "WATER - WONDERS",
-        "Kite Surfing"                  : "WATER - WONDERS",
-        "Scuba Diving"                  : "WATER - WONDERS",
-        "Snorkelling"                   : "WATER - WONDERS",
-        "Surfing"                       : "WATER - WONDERS",
-        "Water Rafting"                 : "WATER - WONDERS"
-}
+TAGS = [
+        ("Rescuer",                        "SKILL",              None,),
+        ("Trainer",                        "SKILL",              None,),
+        ("LAND SPORTS",                    "ACTIVITY_TYPE",      None,),
+        ("OTHER SPORTS",                   "ACTIVITY_TYPE",      None,),
+        ("SKY - FLY",                      "ACTIVITY_TYPE",      None,),
+        ("SNOW - FLOW",                    "ACTIVITY_TYPE",      None,),
+        ("TRAVELLING & SIGHTSEEING",       "ACTIVITY_TYPE",      None,),
+        ("WATER - WONDERS",                "ACTIVITY_TYPE",      None,),
+        ("Export",                         "ARTICLE",            None,),
+        ("Informative",                    "ARTICLE",            None,),
+        ("Top 5 Series",                   "ARTICLE",           None,),
+        ("Camping",                        "ACTIVITY",          "LAND SPORTS",),
+        ("Cycling-Biking",                 "ACTIVITY",          "LAND SPORTS",),
+        ("Marathons",                      "ACTIVITY",          "LAND SPORTS",),
+        ("Mountaineering",                 "ACTIVITY",          "LAND SPORTS",),
+        ("Off-beat Activities",            "ACTIVITY",          "LAND SPORTS",),
+        ("Rappelling & Valley Crossing",   "ACTIVITY",          "LAND SPORTS",),
+        ("Rock Climbing",                  "ACTIVITY",          "LAND SPORTS",),
+        ("Trekking & Hiking",              "ACTIVITY",          "LAND SPORTS",),
+        ("Horse Riding",                   "ACTIVITY",          "OTHER SPORTS",),
+        ("Stargazing",                     "ACTIVITY",          "OTHER SPORTS",),
+        ("Zorbing",                        "ACTIVITY",          "OTHER SPORTS",),
+        ("Bungee jumping",                 "ACTIVITY",          "SKY - FLY",),
+        ("Hang Gliding",                   "ACTIVITY",          "SKY - FLY",),
+        ("Hot Air Ballooning",             "ACTIVITY",          "SKY - FLY",),
+        ("Para Motoring",                  "ACTIVITY",          "SKY - FLY",),
+        ("Paragliding",                    "ACTIVITY",          "SKY - FLY",),
+        ("Parasailing",                    "ACTIVITY",          "SKY - FLY",),
+        ("Sky Diving",                     "ACTIVITY",          "SKY - FLY",),
+        ("Zip Line",                       "ACTIVITY",          "SKY - FLY",),
+        ("Architecture Monuments",         "ACTIVITY",          "TRAVELLING & SIGHTSEEING",),
+        ("Beaches",                        "ACTIVITY",          "TRAVELLING & SIGHTSEEING",),
+        ("Forts & Caves",                  "ACTIVITY",          "TRAVELLING & SIGHTSEEING",),
+        ("Hill stations",                  "ACTIVITY",          "TRAVELLING & SIGHTSEEING",),
+        ("Places to Visit",                "ACTIVITY",          "TRAVELLING & SIGHTSEEING",),
+        ("Theme Parks",                    "ACTIVITY",          "TRAVELLING & SIGHTSEEING",),
+        ("Wildlife Sanctuaries & Safaris", "ACTIVITY",          "TRAVELLING & SIGHTSEEING",),
+        ("Canyoning",                      "ACTIVITY",          "WATER - WONDERS",),
+        ("Kayaking",                       "ACTIVITY",          "WATER - WONDERS",),
+        ("Kite Surfing",                   "ACTIVITY",          "WATER - WONDERS",),
+        ("Scuba Diving",                   "ACTIVITY",          "WATER - WONDERS",),
+        ("Snorkelling",                    "ACTIVITY",          "WATER - WONDERS",),
+        ("Surfing",                        "ACTIVITY",          "WATER - WONDERS",),
+        ("Water Rafting",                  "ACTIVITY",          "WATER - WONDERS",),
+]
 
-for k, v in TAGS.iteritems():
-    if Tag.objects(Q(name=k) & Q(category=v)):
-        continue
-    Tag(name=k, category=v).save()
-    print Tag.objects(Q(name=k) & Q(category=v))
+
+for (i, j, k,) in TAGS:
+    tag = Tag.objects(Q(name=i) & Q(category=j)).first()
+    if tag is not None:
+        if k:
+            if tag.parent.name == k:
+                continue
+            else:
+                tag.parent = Tag.object(name__iexact=k).first()
+        else:
+            continue
+    else:
+        tag = Tag(name=i, category=j)
+        if k:
+            parent = Tag.objects(name__iexact=k).first()
+            if not parent:
+                raise Exception("Parent must be created first")
+        else:
+            parent = None
+        if k and parent:
+            tag.parent = parent
+    print tag
+    tag.save()
 
 print "Tags: ", len(Tag.objects.all())
 

@@ -11,10 +11,11 @@ manager.add_command("runserver", Server(
     use_debugger = True, use_reloader = True, host = '0.0.0.0'))
 
 @manager.command
-def db_fixture():
+@manager.option('-l', '--local', help='should it be local')
+def db_fixture(local=False):
     from app.fixture import db_fixture
     print "Run Database Fixtures\n", "*" * 80
-    db_fixture()
+    db_fixture(local)
 
 if __name__ == '__main__':
     manager.run()
