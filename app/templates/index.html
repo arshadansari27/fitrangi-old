@@ -16,13 +16,13 @@
 		<div class="col-sm-4">
             <div class="thumbnail">
                 <div class="caption">
-					<h4 class=""><a href="/destinations/{{destination.id}}"><font color="white">{{ destination.name }}</font></a></h4>
+					<h4 class=""><a href="/destinations/{{destination.id}}"><font color="white">{{ destination.title }}</font></a></h4>
                     <!--p class=""><a href="" class="label label-danger" rel="tooltip" title="Share">Share</a>
                         <a href="" class="label label-default" rel="tooltip" title="Like">Like</a>
                     </p-->
                 </div>
 				{% if destination.images|length > 0 %}
-					<img src="/files/img/{{ destination.images[0].image._id }}" height="200" alt="..." class="">
+					<img src="{{ destination.images[0] }}" height="200" alt="..." class="">
 				{% else %}
 					<img src="http://placehold.it/300x200" height="200" alt="..." class="">
 				{% endif %}
@@ -44,13 +44,13 @@
 		<div class="col-sm-4">
             <div class="thumbnail">
                 <div class="caption">
-					<h4 class=""><a href="/activities/{{activity.id}}"><font color="white">{{ activity.name }}</font></a></h4>
+					<h4 class=""><a href="/activities/{{activity.id}}"><font color="white">{{ activity.title }}</font></a></h4>
                     <!--p class=""><a href="" class="label label-danger" rel="tooltip" title="Share">Share</a>
                         <a href="" class="label label-default" rel="tooltip" title="Like">Like</a>
                     </p-->
                 </div>
 				{% if activity.images|length > 0 %}
-					<img src="/files/img/{{ activity.images[0].image._id }}" height="200" alt="..." class="">
+					<img src="{{ activity.images[0] }}" height="200" alt="..." class="">
 				{% else %}
 					<img src="http://placehold.it/300x200" height="200" alt="..." class="">
 				{% endif %}
@@ -65,22 +65,22 @@
 	
 	<div class="row">
     	<div class="col-lg-12 text-center">
-        	<h2> Great Stories From Our Blog </h2>
+        	<h2> Great Articles From Our Colletions</h2>
         	<hr class="star-primary"></hr>
     	</div>
     </div>
     <div class="row">	         
-		{% for blog in blogs %}
+		{% for article in articles %}
 		<div class="col-sm-4">
             <div class="thumbnail">
                 <div class="caption">
-					<h4 class=""><a href="/blogs/{{blog.id}}"><font color="white">{{ blog.name }}</font></a></h4>
+					<h4 class=""><a href="/articles/{{article.id}}"><font color="white">{{ article.title }}</font></a></h4>
                     <!--p class=""><a href="" class="label label-danger" rel="tooltip" title="Share">Share</a>
                         <a href="" class="label label-default" rel="tooltip" title="Like">Like</a>
                     </p-->
                 </div>
-				{% if blog.images|length > 0 %}
-					<img src="/files/img/{{ blog.images[0].image._id }}" height="200" alt="..." class="">
+				{% if article.images|length > 0 %}
+					<img src="{{ article.images[0] }}" height="200" alt="..." class="">
 				{% else %}
 					<img src="http://placehold.it/300x200" height="200" alt="..." class="">
 				{% endif %}
@@ -103,13 +103,13 @@
 		<div class="col-sm-4">
             <div class="thumbnail">
                 <div class="caption">
-					<h4 class=""><a href="/dealers/{{dealer.id}}"><font color="white">{{ dealer.name }}</font></a></h4>
+					<h4 class=""><a href="/dealers/{{dealer.id}}"><font color="white">{{ dealer.title }}</font></a></h4>
                     <!--p class=""><a href="" class="label label-danger" rel="tooltip" title="Share">Share</a>
                         <a href="" class="label label-default" rel="tooltip" title="Like">Like</a>
                     </p-->
                 </div>
 				{% if dealer.images|length > 0 %}
-					<img src="/files/img/{{ dealer.images[0].image._id }}" height="200" alt="..." class="">
+					<img src="/files/img/{{ dealer.images[0] }}" height="200" alt="..." class="">
 				{% else %}
 					<img src="http://placehold.it/300x200" height="200" alt="..." class="">
 				{% endif %}

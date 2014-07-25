@@ -1,5 +1,6 @@
 from flask import Blueprint, request, redirect, render_template, url_for
 from flask.views import MethodView
+from mongoengine import Q
 
 from app.models import *
 
@@ -9,81 +10,71 @@ class ListView(MethodView):
 
     def get(self):
         url_prefix = self.getUrlPrefix()
-        categories = set([])
-        if issubclass(self.getClass(), User):
-            users = self.getClass().objects.all()
-            url = 'user/list.html'
-            for a in users:
-                categories.add(a.user_type)
-            return render_template(url, categories=categories, users=users, url_prefix=url_prefix)
-        elif  issubclass(self.getClass(), Post):
-            posts = self.getClass().objects.all()
-            url = 'post/list.html'
-            for a in posts:
-                categories.add(a.category)
-            return render_template(url, categories=categories, posts=posts, url_prefix=url_prefix)
-        else:
-            raise Exception("Invalid class, not implemented")
-
+        categories = {}
+        post_type = self.getType()
+        posts = Post.objects(post_type=post_type).all()
+        url = 'post/list.html'
+        for post in posts:
+            for t in post.tags:
+                categories.setdefault(t.name, [])
+                categories[t.name].append(post)
+        return render_template(url, categories=categories, url_prefix=url_prefix)
 
 class DetailView(MethodView):
 
     def get(self, key):
         url_prefix = self.getUrlPrefix()
-        if issubclass(self.getClass(), User):
-            user = self.getClass().objects.get_or_404(pk=key)
-            profile = user.profile
-            comments = Comment.objects(post=profile).all()
-            return render_template('user/detail.html', user=user, profile=profile, comments=comments, url_prefix=url_prefix)
-        elif  issubclass(self.getClass(), Post):
-            post = self.getClass().objects.get_or_404(pk=key)
-            comments = Comment.objects(post=post).all()
-            return render_template('post/detail.html', post=post, comments=comments, url_prefix=url_prefix)
-        else:
-            raise Exception("Invalid class, not implemented")
-
+        post_type = self.getType()
+        comment_type = PostType.objects(name__iexact='COMMENT').first()
+        post = Post.objects(post_type=post_type).get_or_404(pk=key)
+        comments = Post.objects(Q(post_type=comment_type) & Q(parent=post)).all()
+        return render_template('post/detail.html', post=post, comments=comments, url_prefix=url_prefix)
 
 
 class ActivityView(object):
-    def getClass(self): 
-        return Activity
+    def getType(self): 
+        return PostType.objects(name__iexact='ACTIVITY').first() 
 
     def getUrlPrefix(self):
         return 'activities'
 
 class DestinationView(object):
-    def getClass(self): 
-        return Destination 
+    def getType(self): 
+        return PostType.objects(name__iexact='DESTINATION').first() 
 
     def getUrlPrefix(self):
         return 'destinations'
 
 class EventView(object):
-    def getClass(self): 
-        return Event
+    def getType(self): 
+        return PostType.objects(name__iexact='EVENT').first() 
 
     def getUrlPrefix(self):
         return 'events'
 
 class OrganiserView(object):
-    def getClass(self): 
-        return TripOrganiser
+    def getType(self): 
+        return PostType.objects(name__iexact='ORGANISER').first() 
+
 
     def getUrlPrefix(self):
         return 'organisers'
 
 class DealerView(object):
-    def getClass(self): 
-        return GearDealer
+    def getType(self): 
+        return PostType.objects(name__iexact='DEALER').first() 
+
 
     def getUrlPrefix(self):
         return 'dealers'
 
-class BlogView(object):
-    def getClass(self):
-        return Blog
+class ArticleView(object):
+
+    def getType(self): 
+        return PostType.objects(name__iexact='ARTICLE').first() 
+
     def getUrlPrefix(self):
-        return 'blogs'
+        return 'articles'
 
 class ActivityListView(ListView, ActivityView): pass
 class ActivityDetailView(DetailView, ActivityView): pass
@@ -95,8 +86,8 @@ class OrganiserListView(ListView, OrganiserView): pass
 class OrganiserDetailView(DetailView, OrganiserView): pass
 class DealerListView(ListView, DealerView): pass
 class DealerDetailView(DetailView, DealerView): pass
-class BlogListView(ListView, BlogView): pass
-class BlogDetailView(DetailView, BlogView): pass
+class ArticleListView(ListView, ArticleView): pass
+class ArticleDetailView(DetailView, ArticleView): pass
 
 activities = Blueprint('activities', __name__, template_folder='templates')
 activities.add_url_rule('/activities/', view_func=ActivityListView.as_view('list'))
@@ -118,6 +109,6 @@ dealers = Blueprint('dealers', __name__, template_folder='templates')
 dealers.add_url_rule('/dealers/', view_func=DealerListView.as_view('list'))
 dealers.add_url_rule('/dealers/<key>/', view_func=DealerDetailView.as_view('detail'))
 
-blogs = Blueprint('blogs', __name__, template_folder='templates')
-blogs.add_url_rule('/blogs/', view_func=BlogListView.as_view('list'))
-blogs.add_url_rule('/blogs/<key>/', view_func=BlogDetailView.as_view('detail'))
+articles = Blueprint('articles', __name__, template_folder='templates')
+articles.add_url_rule('/articles/', view_func=ArticleListView.as_view('list'))
+articles.add_url_rule('/articles/<key>/', view_func=ArticleDetailView.as_view('detail'))

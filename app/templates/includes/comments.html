@@ -6,8 +6,14 @@
     	</div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+	{% if comments|length > 0 %}
 	{% for comment in comments %}
 	<h4>{{ comment.created_by }} <small> {{ comment.created_at }}</small></h4>
+	<p><strong>{{ comment.title }}</strong></p>
 	<p>{{ comment.content }}</p>
 	{% endfor %}
+	{% else %}
+		<p><strong>Be the first to comment</strong></p>
+	{% endif %}
+
 </div>

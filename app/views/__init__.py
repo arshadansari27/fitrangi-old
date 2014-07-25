@@ -10,7 +10,7 @@ from flask.ext.login import login_required, login_user, logout_user, current_use
 from flask.ext.admin import helpers, expose
 from app.models import *
 
-from app.views.pages import activities, destinations, events, organisers, dealers, blogs
+from app.views.pages import activities, destinations, events, organisers, dealers, articles
 
 @app.context_processor
 def inject_user():
@@ -52,44 +52,32 @@ def login():
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    if Activity.objects.count() >= 6:
-        activities = Activity.objects.all()[0:6]
+    activity = PostType.objects(name__iexact='ACTIVITY').first()
+    if Post.objects(post_type=activity).count() >= 6:
+        activities = Post.objects(post_type=activity).all()[0:6]
     else:
-        activities = Activity.objects.all()
-    if Destination.objects.count() >= 6:
-        destinations = Destination.objects.all()[0:6]
+        activities = Post.objects(post_type=activity).all()
+    destination = PostType.objects(name__iexact='DESTINATION').first()
+    if Post.objects(post_type=destination).count() >= 6:
+        destinations = Post.objects(post_type=destination).all()[0:6]
     else:
-        destination = Destination.objects.all()
-    if TripOrganiser.objects.count() >= 6:
-        organisers = TripOrganiser.objects.all()[0:6]
+        destination = Post.objects(post_type=destination).all()
+    organiser = PostType.objects(name__iexact='ORGANISER').first()
+    if Post.objects(post_type=organiser).count() >= 6:
+        organisers = Post.objects(post_type=organiser).all()[0:6]
     else:
-        organisers = TripOrganiser.objects.all()
-    if GearDealer.objects.count() >= 6:
-        dealers = GearDealer.objects.all()[0:6]
+        organisers = Post.objects(post_type=organiser).all()
+    dealer = PostType.objects(name__iexact='DEALER').first()
+    if Post.objects(post_type=dealer).count() >= 6:
+        dealers = Post.objects(post_type=dealer).all()[0:6]
     else:
-        dealers = GearDealer.objects.all()
-    if Blog.objects.count() >= 6:
-        blogs = Blog.objects.all()[0:6]
+        dealers = Post.objects(post_type=dealer).all()
+    article = PostType.objects(name__iexact='ARTICLE').first()
+    if Post.objects(post_type=article).count() >= 6:
+        articles = Post.objects(post_type=article).all()[0:6]
     else:
-        blogs = Blog.objects.all()
-
-    return render_template('index.html', activities=activities, destinations=destinations, dealers=dealers, blogs=blogs, organisers=organisers)
-
-@app.route('/files/img/<id>')
-def serve_gridfs_file(id):
-    try:
-        db = get_db()	
-        gfs = GridFS(db, collection='images')
-        fl = gfs.get(ObjectId(id))
-        print fl
-        response = make_response(fl.read())
-        response.mimetype = fl.content_type
-        return response
-    except NoFile:
-        print 'Error occured'
-        abort(404)
-
-
+        articles = Post.objects(post_type=article).all()
+    return render_template('index.html', activities=activities, destinations=destinations, dealers=dealers, articles=articles, organisers=organisers)
 
 class LoginForm(form.Form):
     username = fields.TextField(validators=[validators.required()])

@@ -31,13 +31,13 @@ def init_login():
 
 def register_blueprints(app):
     # Prevents circular imports
-    from app.views import activities, destinations, events, organisers, dealers, blogs
+    from app.views import activities, destinations, events, organisers, dealers, articles
     app.register_blueprint(activities)
     app.register_blueprint(destinations)
     app.register_blueprint(events)
     app.register_blueprint(organisers)
     app.register_blueprint(dealers)
-    app.register_blueprint(blogs)
+    app.register_blueprint(articles)
 
 
 def start_app():
