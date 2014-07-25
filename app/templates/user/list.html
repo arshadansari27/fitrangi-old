@@ -3,7 +3,7 @@
 <!--Land Sports start-->
 <div class="container2">
     <div class="container">
-		{% for category in categories %}
+		{% for category, posts in categories.iteritems() %}
 		<div class="row">
     		<div class="col-lg-12">
 				<h3> {{ category }} </h3> 
@@ -11,27 +11,25 @@
     	</div>
 
 		<div class="row-fluid">			             
-			{% for user in users %}
-			{% if user.user_type == category %}
+			{% for post in posts %}
 			<div class="col-sm-4">
             	<div class="thumbnail">
                 	<div class="caption">
 						<form name="menfrm" action="" method="post">
 							<h4 class="">
-								<a href="/{{url_prefix}}/{{ user.id }}">
-									<font color="white">{{ user.name }}</font>
+								<a href="/{{url_prefix}}/{{ post.id }}">
+									<font color="white">{{ post.title }}</font>
 								</a>
 							</h4>
 						</form>
                 	</div>
-					{% if user.image %}
-					<img src="/files/img/{{ user.image.image._id }}" height="200" alt="..." class="">
+					{% if post.images|length > 0 %}
+					<img src="{{ post.images[0] }}" height="200" alt="..." class="">
 					{% else %}
 					<img src="http://placehold.it/300x200" height="200" alt="..." class="">
 					{% endif %}
             	</div>
         	</div>
-			{% endif %}
 			{% endfor %}
 		</div>
 		{% endfor %}

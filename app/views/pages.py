@@ -12,21 +12,36 @@ class ListView(MethodView):
         url_prefix = self.getUrlPrefix()
         categories = {}
         post_type = self.getType()
-        posts = Post.objects(post_type=post_type).all()
-        url = 'post/list.html'
-        for post in posts:
-            for t in post.tags:
-                categories.setdefault(t.name, [])
-                categories[t.name].append(post)
-        return render_template(url, categories=categories, url_prefix=url_prefix)
+        posts = []
+        if post_type.name in ['ORGANISER', 'DEALER']:
+            users = User.objects(user_type=post_type).all()
+            for user in users:
+                post = user.profile
+                posts.append(post)
+            url = 'user/list.html'
+            categories = {post_type.name: posts}
+            print post_type.name, posts
+            return render_template(url, categories=categories, url_prefix=url_prefix)
+        else:
+            url = 'post/list.html'
+            posts = Post.objects(post_type=post_type).all()
+            for post in posts:
+                for t in post.tags:
+                    categories.setdefault(t.name, [])
+                    categories[t.name].append(post)
+            return render_template(url, categories=categories, url_prefix=url_prefix)
 
 class DetailView(MethodView):
 
     def get(self, key):
         url_prefix = self.getUrlPrefix()
-        post_type = self.getType()
         comment_type = PostType.objects(name__iexact='COMMENT').first()
-        post = Post.objects(post_type=post_type).get_or_404(pk=key)
+        post_type = self.getType()
+        if post_type.name in ['ORGANISER', 'DEALER']:
+            post_type2 = self.getType2()
+            post= Post.objects(post_type=post_type2).get_or_404(pk=key)
+        else:
+            post = Post.objects(post_type=post_type).get_or_404(pk=key)
         comments = Post.objects(Q(post_type=comment_type) & Q(parent=post)).all()
         return render_template('post/detail.html', post=post, comments=comments, url_prefix=url_prefix)
 
@@ -54,16 +69,20 @@ class EventView(object):
 
 class OrganiserView(object):
     def getType(self): 
-        return PostType.objects(name__iexact='ORGANISER').first() 
+        return UserType.objects(name__iexact='ORGANISER').first()
 
+    def getType2(self):
+        return PostType.objects(name__iexact='PROFILE').first() 
 
     def getUrlPrefix(self):
         return 'organisers'
 
 class DealerView(object):
     def getType(self): 
-        return PostType.objects(name__iexact='DEALER').first() 
+        return UserType.objects(name__iexact='DEALER').first()
 
+    def getType2(self):
+        return PostType.objects(name__iexact='PROFILE').first() 
 
     def getUrlPrefix(self):
         return 'dealers'

@@ -79,3 +79,5 @@ def db_fixture(local):
         if __posttype == 'PROFILE' and user is not None:
             user.profile = post
             user.save()
+            post.created_by=user
+            post.save()
