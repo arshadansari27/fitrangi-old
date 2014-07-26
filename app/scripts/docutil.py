@@ -1,5 +1,4 @@
 from BeautifulSoup import BeautifulSoup
-import mammoth, os
 
 def get_document_list(start_url, docs):
     docs.append(start_url)
@@ -13,6 +12,7 @@ def get_document_list(start_url, docs):
 
 
 def load_document(document_url):
+    import mammoth, os
     with open(document_url, 'rb') as docx_file:
         data = []
         result = mammoth.convert_to_html(docx_file)
