@@ -3,11 +3,12 @@
 ##README
 
 ###To install dependencies
-1. sudo pip install -r requirements.txt
+1. sudo apt-get install python-dev
+2. sudo pip install -r requirements.txt
 
 if pip is not install then run: 
 	sudo easy_install pip 
-and then try the step 1 again.
+and then try the step 2 again.
 
 
 ###To Setup the database (Make sure the mongodb is installed on local)
