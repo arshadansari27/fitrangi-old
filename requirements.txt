@@ -6,17 +6,15 @@ Flask-Script==2.0.5
 Flask-WTF==0.9.5
 Jinja2==2.7.3
 MarkupSafe==0.23
+<<<<<<< HEAD
 Pillow==2.5.1
+=======
+>>>>>>> 247c419b530523722d094e1e4321a283eaaa10e3
 WTForms==1.0.5
 Werkzeug==0.9.6
-docx==0.2.4
-dodge==0.1.5
 flask-mongoengine==0.7.0
 itsdangerous==0.24
-lxml==3.3.5
-mammoth==0.3.3
 mongoengine==0.8.7
-parsimonious==0.5
 pymongo==2.7.1
 requests==2.3.0
 simplejson==3.5.3
