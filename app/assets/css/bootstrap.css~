@@ -101,7 +101,7 @@ figure {
 	display:table;
 	}
 .box {
-    background: none repeat scroll 0 0 rgba(36, 37, 38, 0.898);
+    background: none repeat scroll 0 0 rgba(3, 3, 3, 0.898);
     margin-bottom: 20px;
     padding: 30px 15px;
 }
@@ -807,6 +807,11 @@ pre code {
 }
 .container2 {
   padding-top: 50px;
+}
+.containermenu {
+    margin: 0 auto;
+    position: relative;
+    width: 960px;
 }
 @media (min-width: 768px) {
   .container {
@@ -5951,3 +5956,7 @@ td.visible-print {
 .omb_socialButtons .omb_btn-google {background: #c32f10;}	
 
 /*# sourceMappingURL=bootstrap.css.map */
+
+#wrapper{
+	background:url(../img/bg.jpg) !important;
+}
