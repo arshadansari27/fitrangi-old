@@ -1,0 +1,8 @@
+/* MAIN CSS FILE THAT IMPORTS ALL CSS FILES NEEDED FOR OUTSHINED TO WORK */
+@import url("main-style.css");
+
+
+@font-face{
+	font-family:my-ubuntu;
+	src:url(../font/ubuntu.ttf);
+}
