@@ -1,0 +1,18 @@
+/* MAIN CSS FILE THAT IMPORTS ALL CSS FILES NEEDED FOR OUTSHINED TO WORK */
+@import url("main-style.css");
+@import url("mediaelementplayer.min.css");
+@import url("captions.css");
+@import url("slider-style.css");
+@import url("flexslider.css");
+@import url("prettyPhoto.css");
+@import url("settings.css");
+
+@import url("iview.css");
+@import url("skin.css");
+
+@import url("liquid-slider.css");
+
+@font-face{
+	font-family:my-ubuntu;
+	src:url(../font/ubuntu.ttf);
+}
