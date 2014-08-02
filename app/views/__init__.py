@@ -26,6 +26,10 @@ def before_request():
     """
     g.user = None
 
+@app.route('/slider_test', methods=['GET'])
+def slider():
+    return render_template('slider.html')
+
 @app.route('/logout', methods=['GET', 'POST'])
 #@login_required
 def logout_view():

@@ -9,23 +9,21 @@
     <meta name="description" content="" />
 
     <meta name="author" content="fitrangi" />
-    <meta name="author" content="fitrangi" />
     <!--[if IE]>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <![endif]-->
 
     <!-- BOOTSTRAP CORE STYLE CSS -->
-    <link href="/assets/css/modern-business.css" rel="stylesheet">
-    <link href="/assets/css/bootstrap.css" rel="stylesheet" />
     <!-- FONTAWESOME STYLE CSS -->
-    <link href="/assets/css/font-awesome.min.css" rel="stylesheet" />
     <!-- CUSTOM STYLE CSS -->
-    <link href="/assets/css/style.css" rel="stylesheet" />    
     <!-- GOOGLE FONT -->
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
      <!--slider css-->
-	<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
-	<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+	<!--link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet"-->
+    <link href="/assets/css/bootstrap.css" rel="stylesheet" />
+    <link href="/assets/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="/assets/css/style.css" rel="stylesheet" />    
+    <link href="/assets/css/modern-business.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
 	{% block header %}
 	{% endblock %}
 
@@ -119,20 +117,10 @@ Fitrangi.com is a gateway for "Adventure Sports in India" where you can find all
     <!--/.FOOTER END-->
     <!-- JAVASCRIPT FILES PLACED AT THE BOTTOM TO REDUCE THE LOADING TIME  -->
     <!-- CORE JQUERY  -->
-    <script src="/assets/plugins/jquery-1.10.2.js"></script>
-    <!-- BOOTSTRAP SCRIPTS  -->
-    <script src="/assets/plugins/bootstrap.js"></script>
-  <!-- CUSTOM SCRIPTS  -->
-    <script src="/assets/js/custom.js"></script>
-    <!--slider js-->
-	<!--script src="http://codeorigin.jquery.com/jquery-1.10.2.min.js"></script>
-	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
-	<script>
-		$('#myCarousel').carousel({
-			interval:   4000
-		});
-	</script-->
 {% block footer_script %}
+    <script src="/assets/plugins/jquery-1.10.2.js"></script>
+    <script src="/assets/plugins/bootstrap.js"></script>
+    <script src="/assets/js/custom.js"></script>
 {% endblock %}
 
 </body>
