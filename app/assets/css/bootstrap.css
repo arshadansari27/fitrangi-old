@@ -14,24 +14,10 @@ body {
   margin: 0;
   padding-top:70px;
 }
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-main,
-nav,
-section,
-summary {
+article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section,summary {
   display: block;
 }
-audio,
-canvas,
-progress,
-video {
+audio,canvas,progress,video {
   display: inline-block;
   vertical-align: baseline;
 }
