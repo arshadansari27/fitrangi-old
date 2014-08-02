@@ -18,54 +18,6 @@ class Node(db.Document):
         'ordering': ['-created_at']
     }
 
-class Tag(Node):
-    name        = db.StringField(required=True)
-    category    = db.StringField(required=True)
-    parent      = db.ReferenceField('Tag')
-
-    def __unicode__(self):
-        return "%s, %s" % (self.name, self.category)
-
-    meta = {
-        'allow_inheritance': True,
-        'indexes': ['name']
-    }
-
-class ProductType(Node):
-    name        = db.StringField(required=True)
-
-    def __unicode__(self):
-        return self.name
-
-    meta = {
-        'allow_inheritance': True,
-        'indexes': ['name']
-    }
-
-
-class UserType(Node):
-    name        = db.StringField(required=True)
-
-    def __unicode__(self):
-        return self.name
-
-    meta = {
-        'allow_inheritance': True,
-        'indexes': ['name']
-    }
-
-    
-class PostType(Node):
-    name        = db.StringField(required=True)
-
-    def __unicode__(self):
-        return self.name
-
-    meta = {
-        'allow_inheritance': True,
-        'indexes': ['name']
-    }
-
 class Post(Node):
     created_by      = db.ReferenceField('User')
     title           = db.StringField()
@@ -73,8 +25,7 @@ class Post(Node):
     images          = db.ListField(db.StringField())
     videos          = db.ListField(db.StringField())
     tags            = db.ListField(db.ReferenceField(Tag))
-    geo_location    = db.PointField()
-    post_type       = db.ReferenceField(PostType)
+    post_type       = db.StringField()
     parent          = db.ReferenceField('Post')
     
     meta = {
