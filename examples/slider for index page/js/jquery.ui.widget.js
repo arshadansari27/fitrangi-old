@@ -6,7 +6,7 @@
  * and GPL (GPL-LICENSE.txt) licenses.
  *
  * http://docs.jquery.com/UI/Widget
- */
+ */ 
 (function( $ ) {
 
 var _remove = $.fn.remove;
