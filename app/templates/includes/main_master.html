@@ -24,10 +24,10 @@
     <!-- GOOGLE FONT -->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
      <!--slider css-->
-<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
-<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
-
-
+	<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+	<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+	{% block header %}
+	{% endblock %}
 
 
 
@@ -49,7 +49,6 @@
                     <li><a href="/view/articles">ARTICLES</a></li>
                     <li><a href="/view/activities">ACTIVITY</a></li>
                     <li><a href="/view/destinations">DESTINATION</a></li>
-                    <li><a href="/view/events">EVENTS</a></li>
                     <li><a href="/view/organisers">ORGANISERS</a></li>
                     <li><a href="/view/dealers">DEALERS</a></li>
                 </ul>
@@ -76,49 +75,8 @@
     </div>
 
    <!--/.NAVBAR END-->
-    <section id="home" class="text-center">
         
-					{% block search_main %}
-						<!--===========SLIDER START====================-->						
-						
-						
-	<div id="myCarousel" class="carousel slide" data-ride="carousel">  
-      <div class="carousel-inner">
-      	<!--===========SLIDER 1================ -->
-        <div class="item active">
-          <img src="/assets/img/1.jpg" alt="Slide1">
-          </div>
-          <!--===========SLIDER 2================ -->
-        <div class="item">
-          <img src="/assets/img/2.jpg" alt="Slide2">
-          </div>
-          
-          	<!--===========SLIDER 3================ -->
-        <div class="item">
-          <img src="/assets/img/c2.jpg" alt="Slide3">
-          
-        </div>
-      </div>
-     
-
-						
-						
-						<!--==============SLIDER ENDS====================-->
-                       	<div class="carousel-caption" >
-							<section class="main">
-	 							<form class="search" method="post" action="index.html" >
-		 							<input type="text" name="q" placeholder="Search..." />
-	 							</form>
-							</section>
-                        </div>
-					{% endblock %}
-            <!-- Controls -->
-      <a class="left carousel-control" href="#myCarousel" data-slide="prev"><span class="fa fa-chevron-left fa-2x"></span></a>
-      <a class="right carousel-control" href="#myCarousel" data-slide="next"><span class="fa fa-chevron-right fa-2x"></span></a>  
-    </div>     
-            
-    </section>
-
+	{% block search_main %}{% endblock %}
 	<div>
 		{% include 'includes/flash_message.html' %}
 		{% block body %}{% endblock %}
@@ -167,13 +125,15 @@ Fitrangi.com is a gateway for "Adventure Sports in India" where you can find all
   <!-- CUSTOM SCRIPTS  -->
     <script src="/assets/js/custom.js"></script>
     <!--slider js-->
-    <script src="http://codeorigin.jquery.com/jquery-1.10.2.min.js"></script>
-<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
-<script>
-	$('#myCarousel').carousel({
-		interval:   4000
-	});
-</script>
+	<!--script src="http://codeorigin.jquery.com/jquery-1.10.2.min.js"></script>
+	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+	<script>
+		$('#myCarousel').carousel({
+			interval:   4000
+		});
+	</script-->
+{% block footer_script %}
+{% endblock %}
 
 </body>
 </html>
