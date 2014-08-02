@@ -1,8 +1,6 @@
 import datetime
-from types import Node
 
 def get_attributes_for(page_type):
-    print page_type
     found = PAGE_TYPES.get(page_type, None)
     if not found:
         return None
@@ -12,7 +10,6 @@ def get_attributes_for(page_type):
         for v in _attributes:
             attributes.add(v)
     while found.get('parent', None) is not None:
-        print found['parent']
         found = PAGE_TYPES.get(found['parent'], None)
         if not found:
             break
@@ -23,6 +20,23 @@ def get_attributes_for(page_type):
     return attributes
 
 
+def generate_alias_wise_data():
+    aliases = {}
+    for k, v in PAGE_TYPES.iteritems():
+        if v.has_key('aliases'):
+            for _v in v['aliases']:
+                aliases[_v] = k
+
+    return aliases
+
+def get_page_types():
+    page_types = set([])
+    for k in PAGE_TYPES.keys():
+        page_types.add(k)
+    return page_types
+
+
+
 PAGE_TYPES = {
     'Node': {
         'parent': None,
@@ -31,10 +45,11 @@ PAGE_TYPES = {
     'Post': {
         'parent': 'Node',
         'attributes': [
-            ('images', str, None, list), ('videos', str, None, list), ('created_by', Node, 'Profile', None), 
+            ('images', str, None, list), ('videos', str, None, list), ('created_by', 'Node', 'Profile', None), 
+            ('details', str, None, None),
             ('title', str, None, None), ('text', str, None, None), ('published_on', datetime.datetime, None, None), 
             ('is_published', bool, None, None), ('type', str, None, None), ('tags', str, None, list), ('page_access', str, None, None),
-            ('related', Node, 'Post', list)]
+            ('related', 'Node', 'Post', list)]
     },
     'Profile': {
         'parent': 'Node', 
@@ -42,23 +57,26 @@ PAGE_TYPES = {
             ('name', str, None, None), ('email', str, None, None), ('phone', str, None, None), ('address', str, None, None), ('website', str, None, None),
             ('facebook', str, None, None), ('linkedin', str, None, None), ('username', str, None, None), ('password', str, None, None),
             ('is_verified', bool, None, None), ('type', str, None, None), ('tags', str, None, list), 
-            ('following', Node, 'Profile', list), ('followers', Node, 'Profile', list)]
+            ('following', 'Node', 'Profile', list), ('followers', 'Node', 'Profile', list), ('profile_image', str, None, None)]
     },
     'EventOrganiser': {
         'parent': 'Profile',
+        'aliases': ["ORGANISER"],
         'attributes': [
-            ('events', Node, 'Post', list), ('advertisements', Node, 'Post', list)
+            ('events', 'Node', 'Post', list), ('advertisements', 'Node', 'Post', list)
         ]
     },
     'Retailer': {
         'parent': 'Profile',
+        'aliases': ["DEALER"],
         'attributes': [
-            ('products', Node, 'Post', list), ('advertisements', Node, 'Post', list)
+            ('products', 'Node', 'Post', list), ('advertisements', 'Node', 'Post', list)
         ]
     },
     'Enthusiast': {
         'parent': 'Profile',
-        'attributes': [('blogs', Node, 'Post', list), ('comments', Node, 'Post', list), ('questions', Node, 'Post', list)]
+        'aliases': ['USER'],
+        'attributes': [('blogs', 'Node', 'Post', list), ('comments', 'Node', 'Post', list), ('questions', 'Node', 'Post', list)]
 
     },
     'Admin': {
@@ -75,28 +93,32 @@ PAGE_TYPES = {
     },
     'Comment': {
         'parent': 'Post',
-        'attribute': [('belongs_to', Node, 'Post', None), ('reply_to', Node, 'Post', None)]
+        'attribute': [('belongs_to', 'Node', 'Post', None), ('reply_to', 'Node', 'Post', None)]
     },
     'Advertisement': {
         'parent': 'Post',
-        'attribute': [tuple([('ad_for', Node, 'Post', None)])]
+        'attribute': [tuple([('ad_for', 'Node', 'Post', None)])]
     },
     'Event': {
         'parent': 'Post',
-        'attributes': [('from', datetime.datetime, None, None), ('to', datetime.datetime, None, None), ('event_organiser', Node, 'Profile', None)]
+        'aliases': ['EVENT'],
+        'attributes': [('from', datetime.datetime, None, None), ('to', datetime.datetime, None, None), ('event_organiser', 'Node', 'Profile', None)]
     },
     'Product': {
         'parent': 'Post',
-        'attributes': [('price', float, None, None), ('discount', float, None, None), ('retailer', Node, 'Profile', None)]
+        'attributes': [('price', float, None, None), ('discount', float, None, None), ('retailer', 'Node', 'Profile', None)]
     },
     'Activity': {
-        'parent': 'Post'
+        'parent': 'Post',
+        'aliases': ['ACTIVITY'],
     },
     'Destination': {
         'parent': 'Post',
+        'aliases': ['DESTINATION'],
     },
     'FitrangiSpecial': {
-        'parent': 'Post'
+        'parent': 'Post',
+        'aliases': ['ARTICLE'],
     },
     'Trip': {
         'parent': 'Event'

@@ -8,18 +8,16 @@ import os
 #files_path = os.path.join(os.path.dirname(__file__), 'files')
 app = Flask(__name__, template_folder='templates', static_folder='assets')
 app.config['SECRET_KEY'] = '123456790'
-app.config['MONGODB_SETTINGS'] = {'DB': 'fitrangi-db'}
-db = MongoEngine(app)
-admin = admin.Admin(app, 'Fitrangi Data')
+#app.config['MONGODB_SETTINGS'] = {'DB': 'fitrangi-db'}
+#db = MongoEngine(app)
+#admin = admin.Admin(app, 'Fitrangi Data')
 
-from flask.ext import login
 """
+from flask.ext import login
 app.config.update(
     CELERY_BROKER_URL='redis://localhost:6379',
     CELERY_RESULT_BACKEND='redis://localhost:6379'
 )
-"""
-
 def init_login():
     from app.models import User
     login_manager = login.LoginManager()
@@ -28,18 +26,14 @@ def init_login():
     @login_manager.user_loader
     def load_user(user_id):
         return User.objects(pk=user_id).first()
-
+"""
 def register_blueprints(app):
     # Prevents circular imports
-    from app.views import activities, destinations, events, organisers, dealers, articles
-    app.register_blueprint(activities)
-    app.register_blueprint(destinations)
-    app.register_blueprint(events)
-    app.register_blueprint(organisers)
-    app.register_blueprint(dealers)
-    app.register_blueprint(articles)
+    from app.views import blueprints
+    for blueprint in blueprints:
+        app.register_blueprint(blueprint)
 
-
+"""
 def start_app():
     import logging 
     logging.basicConfig()
@@ -55,4 +49,5 @@ def start_app():
 
 init_login()
 start_app()
+"""
 register_blueprints(app)

@@ -1,16 +1,17 @@
 from flask import render_template, make_response, abort, request, g, flash, redirect, url_for
 from app import app
+from app.models import Node
 from mongoengine.fields import get_db
 from bson import ObjectId
 from gridfs import GridFS
 from gridfs.errors import NoFile
 from wtforms import form, fields, validators
 from flask.ext import login
-from flask.ext.login import login_required, login_user, logout_user, current_user
-from flask.ext.admin import helpers, expose
+#from flask.ext.login import login_required, login_user, logout_user, current_user
+#from flask.ext.admin import helpers, expose
 from app.models import *
 
-from app.views.pages import activities, destinations, events, organisers, dealers, articles
+from app.views.pages import blueprints
 
 @app.context_processor
 def inject_user():
@@ -18,15 +19,17 @@ def inject_user():
 
 @app.before_request
 def before_request():
+    """
     if current_user and current_user.is_authenticated():
         g.user = current_user 
     else:
-        g.user = None
+    """
+    g.user = None
 
 @app.route('/logout', methods=['GET', 'POST'])
-@login_required
+#@login_required
 def logout_view():
-    logout_user()
+    #logout_user()
     return redirect(url_for('index'))
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -52,31 +55,11 @@ def login():
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    activity = PostType.objects(name__iexact='ACTIVITY').first()
-    if Post.objects(post_type=activity).count() >= 6:
-        activities = Post.objects(post_type=activity).all()[0:6]
-    else:
-        activities = Post.objects(post_type=activity).all()
-    destination = PostType.objects(name__iexact='DESTINATION').first()
-    if Post.objects(post_type=destination).count() >= 6:
-        destinations = Post.objects(post_type=destination).all()[0:6]
-    else:
-        destination = Post.objects(post_type=destination).all()
-    organiser = PostType.objects(name__iexact='ORGANISER').first()
-    if Post.objects(post_type=organiser).count() >= 6:
-        organisers = Post.objects(post_type=organiser).all()[0:6]
-    else:
-        organisers = Post.objects(post_type=organiser).all()
-    dealer = PostType.objects(name__iexact='DEALER').first()
-    if Post.objects(post_type=dealer).count() >= 6:
-        dealers = Post.objects(post_type=dealer).all()[0:6]
-    else:
-        dealers = Post.objects(post_type=dealer).all()
-    article = PostType.objects(name__iexact='ARTICLE').first()
-    if Post.objects(post_type=article).count() >= 6:
-        articles = Post.objects(post_type=article).all()[0:6]
-    else:
-        articles = Post.objects(post_type=article).all()
+    activities = Node.find({'type':'Activity'}, limit=6)
+    destinations = Node.find({'type': "Destination"}, limit=6)
+    organisers = Node.find({"type": "EventOrganiser"}, limit=6)
+    dealers = Node.find({"type": "Retailer"}, limit=6)
+    articles = Node.find({"type": {"$in": ["Blog", "FitrangiSpecial"]}}, limit=6)
     return render_template('index.html', activities=activities, destinations=destinations, dealers=dealers, articles=articles, organisers=organisers)
 
 class LoginForm(form.Form):
