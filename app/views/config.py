@@ -46,5 +46,30 @@ configuration = {
 		"post": {
 			"page-types": ["Activity", "Destination", "Blog", "FitrangiSpecial"]
 		}
-	}
+	},
+        "editors": {
+                "login": {
+                        "url-prefix": "/login",
+                        "page-type":  "Profile",
+                        "fields": {
+                                "email":    {"required": True},
+                                "password": {"required": True}
+                        }
+                },
+                "logout": {
+                        "url-prefix": "/login",
+                        "page-type":  "Profile",
+                        "fields": {}
+                },
+                "registration": {
+                        "url-prefix": "/register",
+                        "page-type":  "Profile",
+                        "fields": {
+                                "name":     {"required": True},
+                                "email":    {"required": True},
+                                "password": {"required": True},
+                                "confirm":  {"required": True}
+                        }
+                }
+        }
 }
