@@ -1,2 +1,30 @@
 {% extends "includes/main_master.html" %}
-{% block search_menu %}{% endblock %}
+{% block header%}
+	 <!--link href="/assets/css/example.css" rel="stylesheet"-->
+{% endblock %}
+{% block search_menu %}
+
+{% endblock %}
+{% block footer_js %}
+    <!--script type="text/javascript" src="/assets/js/index-page-slider.js"></script>
+	<script type="text/javascript">
+		var $s = jQuery.noConflict();     
+			jQuery(function($) {
+				$( "#carousel ").rcarousel({
+					margin: 10
+				});
+				
+				$( "#ui-carousel-next" )
+					.add( "#ui-carousel-prev" )
+					.hover(
+						function() {
+							$( this ).css( "opacity", 0.7 );
+						},
+						function() {
+							$( this ).css( "opacity", 1.0 );
+						}
+					);					
+			});
+		</script--> 
+
+{% endblock %}

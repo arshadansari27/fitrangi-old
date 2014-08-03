@@ -14,7 +14,6 @@
                         <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
                             
                         <form id="loginform" action="/login" method="post" class="form-horizontal" role="form">
-                            <div style="display:none;">{{ login_form.hidden_tag() if login_form.hidden_tag }}</div>
                             <div style="margin-bottom: 25px" class="input-group">
                                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                                         <input id="username" type="text" class="form-control" name="username" value="" placeholder="username or email">                                        
@@ -40,7 +39,7 @@
                                     <!-- Button -->
 
                                     <div class="col-sm-12 controls">
-                                      <button id="btn-login" type="submit" class="btn btn-success">Login  </button>
+                                      <button id="btn-login" type="button" class="btn btn-success">Login  </button>
                                       
                                     </div>
                                 </div>
@@ -125,5 +124,7 @@
                     </div>
          </div> 
     </div>
+	<div id="script_name" class="hide">login.js</div>
 {% endblock %}
-{% block footer %} {% endblock %}
+{% block footer %} 
+{% endblock %}

@@ -205,8 +205,8 @@ a.screen-roll {
     z-index: 10;
     width: 100%;
     height: 100%;
-    background: #6495ED  url(../img/product-list-img/thumb-hover.png) no-repeat center center; /* IE8 */
-    background: rgba(102,178,255,0.85) url(../img/product-list-img/thumb-hover.png) no-repeat center center;
+    background: #6495ED  url(/assets/img/product-list-img/thumb-hover.png) no-repeat center center; /* IE8 */
+    background: rgba(102,178,255,0.85) url(/assets/img/product-list-img/thumb-hover.png) no-repeat center center;
     opacity: 0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"; /* IE 8 */
     filter: alpha(opacity=0);
@@ -218,8 +218,8 @@ a.screen-roll {
     z-index: 10;
     width: 100%;
     height: 100%;
-    background: #6495ED url('../images/thumb-hover-video.png') no-repeat center center; /* IE8 */
-    background: rgba(252,175,23,0.85) url('../images/thumb-hover-video.png') no-repeat center center;
+    background: #6495ED url('/assets/img/thumb-hover-video.png') no-repeat center center; /* IE8 */
+    background: rgba(252,175,23,0.85) url('/assets/img/thumb-hover-video.png') no-repeat center center;
     opacity: 0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"; /* IE 8 */
     filter: alpha(opacity=0);
@@ -231,6 +231,7 @@ a.screen-roll {
 	font-size:14px;
 	text-transform:uppercase;
 	text-align:center;
+	{% block header %}
 	padding:1%;
 	color:#2D3032;
 }
@@ -358,7 +359,7 @@ img {
 			#ui-carousel-next, #ui-carousel-prev {
 				width: 60px;
 				height: 200px;
-				background: url(../img/artical-img/arrow-left.png) transparent center center no-repeat;
+				background: url(/assets/img/artical-img/arrow-left.png) transparent center center no-repeat;
 				display: block;
 				position: absolute;
 				/*top:140px;*/
@@ -368,7 +369,7 @@ img {
 
 			#ui-carousel-next {
 				right: 0;
-				background-image:url(../img/artical-img/arrow-right.png);
+				background-image:url(/assets/img/artical-img/arrow-right.png);
 			}
 
 			#ui-carousel-prev {
@@ -516,7 +517,7 @@ hr {
    -moz-box-shadow: 1px 1px 2px #e6e6e6;
    box-shadow: 1px 1px 2px #e6e6e6;
    cursor: default;
-   background: #fff url(../images/bgimg.jpg) no-repeat center center;
+   background: #fff url(/assets/img/bgimg.jpg) no-repeat center center;
 }
 .view .mask, .view .content {
    width: 300px;
