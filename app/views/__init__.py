@@ -29,3 +29,7 @@ def index():
     dealers = Node.find({"type": "Retailer"}, limit=6)
     articles = Node.find({"type": {"$in": ["Blog", "FitrangiSpecial"]}}, limit=6)
     return render_template('index.html', activities=activities, destinations=destinations, dealers=dealers, articles=articles, organisers=organisers)
+
+@app.route('/login', methods=['GET'])
+def login():
+    return render_template('login.html')

@@ -13,9 +13,6 @@ for k, v in configuration['editors'].iteritems():
 
 class LoginView(PublicEditView):
 
-    def get(self):
-        return render_template('login.html')
-
     def post(self):
         payload = request.json or {}
         print '*' * 100
