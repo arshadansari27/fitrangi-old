@@ -98,10 +98,23 @@ class Service(object):
                 'address': '', 'website': '', 
                 'facebook': '', 'profile_image':  None,
                 'linkedin': '', 'username': None, 'password': None, 'is_verified': False, 
-                'type': page_type, 'created_on': datetime.datetime.now(), 'followers': [], 'following': [],  'tags': list(set(["Enthusiast", _type]))
+                'type': _type, 'created_on': datetime.datetime.now(), 'followers': [], 'following': [],  'tags': list(set(["Enthusiast", _type, page_type]))
             }
         else:
             raise Exception("Invalid Page Type")
+
+    @classmethod
+    def registerProfile(cls, name, email, password):
+        password = hashlib.md5(password).hexdigest()
+        profile = cls.get_default('Enthusiast')
+        profile['name'] = name
+        profile['email'] = email
+        profile['password'] = password
+        profile['username'] = email
+        node = Node(profile)
+        node.save()
+        return node
+
        
     @classmethod
     def create_comment(cls, author_node, comment_text, post_node):
