@@ -23,7 +23,7 @@
     <link href="/assets/css/font-awesome.min.css" rel="stylesheet" />
     <link href="/assets/css/style.css" rel="stylesheet" />    
     <link href="/assets/css/modern-business.css" rel="stylesheet">
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+    <!--link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' /-->
 	{% block header %}
 	{% endblock %}
 
@@ -77,6 +77,8 @@
 	{% block search_main %}{% endblock %}
 	<div>
 		{% include 'includes/flash_message.html' %}
+		{% include 'includes/ajax_flash_message.html' %}
+
 		{% block body %}{% endblock %}
 	</div>
 	{% block footer %}
@@ -123,6 +125,9 @@ Fitrangi.com is a gateway for "Adventure Sports in India" where you can find all
     <script src="/assets/js/custom.js"></script>
 	{% endblock %}
     <script src="/assets/appjs/app.js"></script>
+	<div id="script_name" class="hide">
+		{% block script_list %}{% endblock %}
+	</div>
 	<div id="footer-scripts"></div>
 </body>
 </html>

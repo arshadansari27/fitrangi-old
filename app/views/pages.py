@@ -2,6 +2,7 @@ from flask import Blueprint, request, redirect, render_template, url_for, abort
 from flask.views import MethodView
 from app.models import Node
 from config import configuration
+import datetime
 
 url_prefixes = {}
 for k, v in configuration['views'].iteritems():
@@ -60,8 +61,10 @@ class DetailView(MethodView):
             raise Exception("No template found for _types: %s" % str(_types))
          
         url = template + '/detail.html'
-
-        return render_template(url, node=node, comments=[], url_prefix=url_prefix)
+        
+        comments = list(Node.find({'type': 'Comment', 'belongs_to': str(node._id)}))
+        print '*** All Comments', comments
+        return render_template(url, node=node, allcomments=comments, url_prefix=url_prefix)
 
 blueprints = []
 for k_view in configuration['views'].keys():

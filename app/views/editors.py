@@ -1,6 +1,6 @@
 from flask import Blueprint, request, redirect, render_template, url_for, abort, flash, g
 from flask.views import MethodView
-#from app.models import Node
+from app.models import Node, Service
 from config import configuration
 from utils import json_converter, login_required, admin_required, PublicEditView, PrivateEditView, AdminEditView
 
@@ -30,7 +30,6 @@ class LoginView(PublicEditView):
 
 class LogoutView(PrivateEditView):
     def post(self):
-        print '*****', g.user, g.user.id
         user = User.logged_in_user() 
         if user:
             print "Logging out", user.id
@@ -38,6 +37,22 @@ class LogoutView(PrivateEditView):
                 return {'status': 'success', 'message': 'Logout successfull'}
 
         return {'status': 'error', 'message': 'Something went bad'}
+
+class CommentEditor(PrivateEditView):
+
+    def post(self):
+        user = User.logged_in_user() 
+        if user:
+            payload = request.json or {}
+            comment = payload.get('comment')
+            post_key    = payload.get('key')
+            author = Node.get_by_id(user.id)
+            post = Node.get_by_id(post_key)
+            comment_node = Service.create_comment(author, comment, post)
+            return {'status': 'success', 'node': comment_node, 'message': 'Successfully posted the comment'}
+        else:
+            return {'status': 'error', 'message': 'Please login first.'}
+
 
 """
 class Bananas(EditView):
@@ -59,3 +74,4 @@ the_api.add_url_rule('/farm/<farm_id>/bananas', view_func=Bananas.as_view('banan
 the_api = Blueprint('the_api', __name__, template_folder='templates')
 the_api.add_url_rule('/login', view_func=LoginView.as_view('login'))
 the_api.add_url_rule('/logout', view_func=LogoutView.as_view('logout'))
+the_api.add_url_rule('/comment', view_func=CommentEditor.as_view('comment'))

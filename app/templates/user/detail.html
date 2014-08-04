@@ -24,9 +24,11 @@
         			</div>
             	</div>
           		<!-- the comment box -->
-            	{% include 'includes/comments.html' %}	
+				{% import 'includes/comments.html' as comment_macro %}
+				{{ comment_macro.show_comments(allcomments, node._id)}}
         	</div>
     	</div>
   	</div>   	
 </div>   
 {% endblock %}
+{% block script_list %}comments.js{% endblock %}
