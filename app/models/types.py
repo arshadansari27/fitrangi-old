@@ -17,16 +17,8 @@ class Node(object):
         if not kwargs.has_key('created_on'):
             kwargs['created_on'] = datetime.datetime.now()
 
-        if kwargs.has_key('_id'):
-            self.__dict__['_id'] = kwargs['_id']
-        page_type = kwargs['type']
-        from page_types import get_attributes_for
-        attributes = get_attributes_for(page_type)
-        for attribute in attributes:
-            _name = attribute[0]
-            self.__dict__.setdefault(_name, None)
-            if kwargs.get(_name, None):
-                self.__dict__[_name] = kwargs[_name]
+        for k in kwargs.keys():
+            self.__dict__[k] = kwargs[k]
 
     def __getattr__(self, attr):
         value = None
@@ -36,6 +28,13 @@ class Node(object):
             if type(value) == ObjectId:
                 value = Node.get_by_id(value)
         return value
+
+    @property
+    def created_by(self):
+        _id = self.__dict__['created_by']
+        if not _id:
+            return None
+        return Node.get_by_id(_id)
 
     @classmethod
     def __node_from_doc(cls, doc):

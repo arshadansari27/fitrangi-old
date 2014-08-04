@@ -1,8 +1,10 @@
 from flask import Blueprint, request, redirect, render_template, url_for, abort, flash, g
 from flask.views import MethodView
-#from app.models import Node
+from app.models import Node, Service
 from config import configuration
 from utils import json_converter, login_required, admin_required, PublicEditView, PrivateEditView, AdminEditView
+from base64 import decodestring, b64decode
+import os, urllib, binascii
 
 from app.models import Node, User
 
@@ -30,7 +32,6 @@ class LoginView(PublicEditView):
 
 class LogoutView(PrivateEditView):
     def post(self):
-        print '*****', g.user, g.user.id
         user = User.logged_in_user() 
         if user:
             print "Logging out", user.id
@@ -39,23 +40,106 @@ class LogoutView(PrivateEditView):
 
         return {'status': 'error', 'message': 'Something went bad'}
 
-"""
-class Bananas(EditView):
- 
-    def post(self, url_prefix, key=None):
-        '''Create new banana.'''
-        payload = request.json or {}
-        banana_type, name = payload.get('type'), payload.get('name')
-        farm_id = payload.get('farm') or farm_id
-        if not banana_type or not name or not farm_id:
-            raise BadRequest('"type", "farm" and "name" are required.')
- 
-        return bananas.new(banana_type=banana_type, name=name, farm_id=farm_id)
+class CommentEditor(PrivateEditView):
 
-the_api = Blueprint('the_api', __name__)
-the_api.add_url_rule('/bananas', view_func=Bananas.as_view('bananas'))
-the_api.add_url_rule('/farm/<farm_id>/bananas', view_func=Bananas.as_view('bananas_from_a_farm'))
-"""
+    def post(self):
+        user = User.logged_in_user() 
+        if user:
+            payload = request.json or {}
+            comment = payload.get('comment')
+            post_key    = payload.get('key')
+            author = Node.get_by_id(user.id)
+            post = Node.get_by_id(post_key)
+            comment_node = Service.create_comment(author, comment, post)
+            return {'status': 'success', 'node': comment_node, 'message': 'Successfully posted the comment'}
+        else:
+            return {'status': 'error', 'message': 'Please login first.'}
+
+class ProfileEditor(PrivateEditView):
+
+    def post(self):
+        
+        user = User.logged_in_user() 
+        try:
+            if user:
+                payload = request.json or {}
+                post_key    = payload.get('key')
+                name = payload.get('name')
+                username= payload.get('username')
+                email= payload.get('email')
+                phone= payload.get('phone')
+                address= payload.get('address')
+                facebook= payload.get('facebook')
+                linkedin = payload.get('linkedin')
+                _type = payload.get('type')
+                details = payload.get('details')
+                image = payload.get('image')
+                profile = Node.get_by_id(post_key)
+                profile.name = name
+                profile.username = username
+                profile.email = email
+                profile.phone = phone
+                profile.address = address
+                profile.facebook = facebook
+                profile.linkedin = linkedin
+                profile.type = _type
+                profile.details = details
+                profile.save()
+                print ">>>>>>>>>", profile.__dict__
+                if image:
+                    try:
+                        if image:
+                            image = image[image.index(',') + 1:]
+                            with open(os.getcwd() + '/app' + post.images[0],"wb") as f:
+                                f.write(image.decode('base64'))
+                    except Exception, e:
+                        print str(e)
+                        return {'status': 'error', 'message': 'Update the data but image could not be saved'}
+                return {'status': 'success', 'node': profile, 'message': 'Successfully updated the post'}
+            else:
+                return {'status': 'error', 'message': 'Please login first.'}
+        except:
+            return {'status': 'error', 'message': 'Something went wrong.'}
+
+
+class PostEditor(PrivateEditView):
+
+    def post(self):
+        
+        user = User.logged_in_user() 
+        try:
+            if user:
+                payload = request.json or {}
+                post_key    = payload.get('key')
+                title = payload.get('title')
+                text = payload.get('text')
+                published = payload.get('published')
+                image = payload.get('image')
+                post = Node.get_by_id(post_key)
+                post.title = title
+                post.text = text 
+                post.published = published
+                post.save()
+                if image:
+                    try:
+                        if image:
+                            image = image[image.index(',') + 1:]
+                            with open(os.getcwd() + '/app' + post.images[0],"wb") as f:
+                                f.write(image.decode('base64'))
+                    except Exception, e:
+                        print str(e)
+                        return {'status': 'error', 'message': 'Update the data but image could not be saved'}
+                return {'status': 'success', 'node': post, 'message': 'Successfully updated the post'}
+            else:
+                return {'status': 'error', 'message': 'Please login first.'}
+        except:
+            return {'status': 'error', 'message': 'Something went wrong.'}
+
+
+
 the_api = Blueprint('the_api', __name__, template_folder='templates')
 the_api.add_url_rule('/login', view_func=LoginView.as_view('login'))
 the_api.add_url_rule('/logout', view_func=LogoutView.as_view('logout'))
+the_api.add_url_rule('/comment', view_func=CommentEditor.as_view('comment'))
+the_api.add_url_rule('/post_edit', view_func=PostEditor.as_view('post_edit'))
+the_api.add_url_rule('/profile_edit', view_func=ProfileEditor.as_view('profile_edit'))

@@ -27,13 +27,13 @@ class User():
         node = Node.get_by_id(_id)
         print "Got", node, '' if not node else node.type
         if node.type and PAGE_TYPES[node.type]['parent'] == 'Profile':
-            return User(node.name, node._id)
+            return User(node.name, node._id, _type=node.type)
         else:
             _type = node.type
             while _type is not None and (PAGE_TYPES[_type]['parent'] != 'Profile' or PAGE_TYPES[_type]['parent'] is None):
                 _type = PAGE_TYPES[_type]['parent']
                 if PAGE_TYPES[_type] == 'Profile':
-                    return User(node.name, node._id, _type=user.type)
+                    return User(node.name, node._id, _type=node.type)
         return None
 
     def logout_user(self):
@@ -52,7 +52,7 @@ class User():
             node = nodes[0]
             session['login'] = {'id': str(node._id), 'timestamp': datetime.datetime.now()}
             g.user = User(node.name, node._id, node.type, False)
-            print g.user.name, g.user.id
+            print "***Authenticated", g.user
         else:
             g.user = None
         return g.user
@@ -68,3 +68,48 @@ class User():
             user = User.get(_id) 
             g.user = user
         return g.user
+
+
+class Service(object):
+
+    @classmethod
+    def get_default(cls, _type):
+        if _type in ['Profile', 'Admin', 'EventOrganiser', 'Enthusiast', 'Retailer']:
+            page_type = 'Profile'
+        else:
+            page_type = 'Post'
+        if page_type == 'Post':
+            return {
+                'images': [], 'videos':[], 'created_by': None,  'created_on': datetime.datetime.now(),
+                'title': None, 'text': '', 'published_on': None, 
+                'is_published': False, 'type': _type, 'tags': list(set(['Enthusiast', _type])), 'page_access': 'public',
+                'related': []
+            }
+        elif page_type == 'Profile':
+            return {
+                'name': None, 'email': None, 'phone': '', 
+                'address': '', 'website': '', 
+                'facebook': '', 'profile_image':  None,
+                'linkedin': '', 'username': None, 'password': None, 'is_verified': False, 
+                'type': page_type, 'created_on': datetime.datetime.now(), 'followers': [], 'following': [],  'tags': list(set(["Enthusiast", _type]))
+            }
+        else:
+            raise Exception("Invalid Page Type")
+       
+    @classmethod
+    def create_comment(cls, author_node, comment_text, post_node):
+        comment_node = cls.get_default('Comment')
+        comment_node['text'] = comment_text
+        comment_node['created_by'] = str(author_node._id)
+        comment_node['published_on'] = datetime.datetime.now()
+        comment_node['is_published'] = True
+        print "Adding comment for *********", post_node._id
+        comment_node['belongs_to'] = str(post_node._id)
+        node = Node(comment_node)
+    
+        node.save()
+        print "Comment Created:", node._id
+        return node
+
+        
+

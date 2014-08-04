@@ -19,6 +19,18 @@ jQuery(document).ready(function($){
 		});
 		return false;
 	});
+	
+	$('#signinlink').on('click', function(e) {
+		e.stopPropagation();
+		$('#signupbox').hide();
+		$('#loginbox').show();
+	});
+
+	$('#signupshow').on('click', function(e) {
+		e.stopPropagation();
+		$('#loginbox').hide();
+		$('#signupbox').show();
+	});
 
 	var loginUser = function(options) {
 		var uname = options.username;

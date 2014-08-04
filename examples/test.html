@@ -1,13 +1,44 @@
-<h2><em>This is a test</em></h2>
+<!DOCTYPE html>
+<html>
+    <head>
+        <script>        
+            function handleFileSelect()
+            {               
+                if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
+                    alert('The File APIs are not fully supported in this browser.');
+                    return;
+                }   
 
-<h2>Whatever you see here is interesting</h2>
+                input = document.getElementById('fileinput');
+                if (!input) {
+                  alert("Um, couldn't find the fileinput element.");
+               }
+               else if (!input.files) {
+                  alert("This browser doesn't seem to support the `files` property of file inputs.");
+               }
+               else if (!input.files[0]) {
+                  alert("Please select a file before clicking 'Load'");               
+               }
+               else {
+                  file = input.files[0];
+                  fr = new FileReader();
+                  fr.onload = receivedText;
+                  //fr.readAsText(file);
+                  fr.readAsDataURL(file);
+               }
+            }
 
-<ul>
-<li>One </li>
-<li>two </li>
-<li>three</li>
-</ul>
+            function receivedText() {           
+               result = fr.result;
+			   console.log(result);
+               document.getElementById('editor').appendChild(document.createTextNode(result))
+            }           
 
-<p>[Olivelabs Inc|http://www.olivelabsinc.com]
-1. Test site
-2. Something else</p>
+        </script>
+    </head>
+    <body>
+        <input type="file" id="fileinput"/>
+        <input type='button' id='btnLoad' value='Load' onclick='handleFileSelect();'>
+        <div id="editor"></div>
+    </body>
+</html>

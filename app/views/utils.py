@@ -3,12 +3,14 @@ from bson import ObjectId
 from flask.views import MethodView
 from pymongo.errors import DuplicateKeyError
 from werkzeug import exceptions
-from app.models import User
+from app.models import User, Node
 
 class JsonEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, ObjectId):
             return str(obj)
+        if isinstance(obj, Node):
+            return obj.__dict__
         return json.JSONEncoder.default(self, obj)
 
 def handle_exception(e):
@@ -30,9 +32,11 @@ def json_converter(f):
             raise
  
         if isinstance(result, dict):
+            print '**** dumping', result
             result = json.dumps(result, cls=JsonEncoder)
         else:
             # unwind cursor
+            print '**** manipulting first', result
             result = json.dumps(list(result), cls=JsonEncoder)
         response = make_response(result)
         response.headers['Content-Type'] = 'application/json; charset=utf-8'
@@ -45,7 +49,7 @@ def login_required(f):
         print 'lOGIN REQUIRED DECORATION'
         user = User.logged_in_user()
         if not user:
-            return {'error': True, 'status_code': 401, 'message':'You must log in to access this URL.'}
+            return {'status': 'error', 'status_code': 401, 'message':'You must log in to access this URL.'}
         return f(*args, **kwargs)
     return decorator
  
@@ -55,7 +59,7 @@ def admin_required(f):
         user = g.user
         if not user or not user.is_admin():
             print 'Returning Dict Response from admin required check'
-            return {'error':True, 'status_code':403, 'message':'You must log in as admin to access this URL.'}
+            return {'status': 'error', 'status_code':403, 'message':'You must log in as admin to access this URL.'}
         return f(*args, **kwargs)
     return decorator
  

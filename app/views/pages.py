@@ -1,7 +1,8 @@
-from flask import Blueprint, request, redirect, render_template, url_for, abort
+from flask import Blueprint, request, redirect, render_template, url_for, abort, g
 from flask.views import MethodView
-from app.models import Node
+from app.models import Node, PAGE_TYPES
 from config import configuration
+import datetime
 
 url_prefixes = {}
 for k, v in configuration['views'].iteritems():
@@ -61,7 +62,14 @@ class DetailView(MethodView):
          
         url = template + '/detail.html'
 
-        return render_template(url, node=node, comments=[], url_prefix=url_prefix)
+        if (hasattr(node, 'created_by') and g.user.id == node.created_by) or g.user.is_admin():
+            show_edit = True
+        else:
+            show_edit = False
+        
+        comments = list(Node.find({'type': 'Comment', 'belongs_to': str(node._id)}))
+        print '*** All Comments', comments
+        return render_template(url, node=node, allcomments=comments, url_prefix=url_prefix, show_edit=show_edit)
 
 blueprints = []
 for k_view in configuration['views'].keys():
