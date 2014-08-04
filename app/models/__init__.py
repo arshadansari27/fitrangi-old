@@ -7,10 +7,9 @@ from flask import session, g
 class User():
     def __init__(self, name, id, _type=None, anonymous=False):
         self.name = name
-        self.id = id
+        self.id = str(id)
         self.type = _type
         self.is_anonymous = anonymous
-
 
     def __repr__(self):
         return "%s: %s [%s]" % (self.type, self.name, self.id)
@@ -48,10 +47,17 @@ class User():
         password = hashlib.md5(password).hexdigest()
         nodes = Node.find({'email': email, 'password': password})
         print 'Authenticating', email, password, len(nodes)
-        if nodes and len(nodes)  > 0:
-            node = nodes[0]
-            session['login'] = {'id': str(node._id), 'timestamp': datetime.datetime.now()}
-            g.user = User(node.name, node._id, node.type, False)
+        if not nodes or len(nodes) is 0:
+            return None
+        node = nodes[0]
+        if node:
+            user = User(node.name, node._id, node.type, False)
+            session['login'] = {
+                'id': str(node._id), 
+                'timestamp': datetime.datetime.now(),
+                'user_obj': user.__dict__
+            }
+            g.user = user
             print "***Authenticated", g.user
         else:
             g.user = None
@@ -60,13 +66,14 @@ class User():
     @classmethod
     def logged_in_user(cls):
         if not session.has_key('login'):
-            return False
+            return None
         session_info = session['login']
-        print "Session INFO: ", session_info
-        _id = session_info['id']
-        if not hasattr(g, 'user') or g.user is None or  g.user.id != _id:
-            user = User.get(_id) 
-            g.user = user
+        user_dict = session_info['user_obj']
+        if not user_dict:
+            session.pop('login', None)
+            return None
+        g.user = User(user_dict['name'], user_dict['id'], user_dict['type'])
+        print "INFO from session: ", g.user
         return g.user
 
 

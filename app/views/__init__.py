@@ -9,15 +9,12 @@ from app.views.pages import blueprints
 from app.views.editors import the_api
 from app.views.utils import login_required
 
-@app.context_processor
-def inject_user():
-    return dict(user=g.user if hasattr(g, 'user') else None)
-
 @app.before_request
 def before_request():
     if not hasattr(g, 'user') or g.user is None:
-        user = User.logged_in_user()
-    print "********* IS Admin: ", g.user.is_admin()
+        g.user = User.logged_in_user()
+        if not g.user:
+            return
 
 @app.route('/slider_test', methods=['GET'])
 def slider():
