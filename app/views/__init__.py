@@ -15,7 +15,9 @@ def inject_user():
 
 @app.before_request
 def before_request():
-        g.user = User.logged_in_user()
+    if not hasattr(g, 'user') or g.user is None:
+        user = User.logged_in_user()
+    print "********* IS Admin: ", g.user.is_admin()
 
 @app.route('/slider_test', methods=['GET'])
 def slider():
@@ -23,8 +25,20 @@ def slider():
 
 @app.route('/post_editor/<key>', methods=['GET'])
 def edit_post(key):
+    if not hasattr(g, 'user') or g.user is None:
+        return redirect(url_for('index'))
     node = Node.get_by_id(key)
-    return render_template('post/editor.html', post=node)
+    back = request.referrer
+    return render_template('post/editor.html', post=node, back=back)
+
+@app.route('/profile_editor/<key>', methods=['GET'])
+def edit_profile(key):
+    if not hasattr(g, 'user') or g.user is None:
+        return redirect(url_for('index'))
+    node = Node.get_by_id(key)
+    back = request.referrer
+    return render_template('user/editor.html', profile=node, back=back)
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():

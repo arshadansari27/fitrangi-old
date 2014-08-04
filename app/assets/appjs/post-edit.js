@@ -22,6 +22,11 @@ $(document).ready(function(){
 		});
 	};
 
+	$('#posteditor-form').on('click', '[data-back]', function(e) {
+		console.log($(this).attr('data-back'));
+		window.location.href = $('[data-back]').attr('data-back');
+	});
+
 	$('#posteditor-form').on('click', '#btn-save', function(e) {
 		e.stopPropagation();
 		var $title = $('#title').val();

@@ -27,13 +27,13 @@ class User():
         node = Node.get_by_id(_id)
         print "Got", node, '' if not node else node.type
         if node.type and PAGE_TYPES[node.type]['parent'] == 'Profile':
-            return User(node.name, node._id)
+            return User(node.name, node._id, _type=node.type)
         else:
             _type = node.type
             while _type is not None and (PAGE_TYPES[_type]['parent'] != 'Profile' or PAGE_TYPES[_type]['parent'] is None):
                 _type = PAGE_TYPES[_type]['parent']
                 if PAGE_TYPES[_type] == 'Profile':
-                    return User(node.name, node._id, _type=user.type)
+                    return User(node.name, node._id, _type=node.type)
         return None
 
     def logout_user(self):
@@ -52,7 +52,7 @@ class User():
             node = nodes[0]
             session['login'] = {'id': str(node._id), 'timestamp': datetime.datetime.now()}
             g.user = User(node.name, node._id, node.type, False)
-            print g.user.name, g.user.id
+            print "***Authenticated", g.user
         else:
             g.user = None
         return g.user

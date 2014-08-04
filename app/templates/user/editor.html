@@ -1,0 +1,130 @@
+{% extends "includes/rest_master.html" %}
+{% block header %}
+<link rel="stylesheet" href="/assets/css/tinyeditor.css">
+<script src="/assets/js/tiny.editor.js"></script>
+{% endblock %}
+{% block body %}
+<div class="container" style="margin-top:50px;">    
+    <div id="editorbox">                    
+        <div class="panel panel-info" >
+            <div class="panel-heading">
+                <div class="panel-title">Edit Profile</div>
+            </div>     
+            <div style="padding-top:30px" class="panel-body" >
+				<form id="profileeditor-form" data-key="{{profile._id}}" action="/profile_editor" method="post" class="form-horizontal" role="form">
+                    <div class="input-group" style="width:50%;">
+						<label>Name (eg. John Doe)</label>
+						<fieldset>
+							<input id="name"  style="width:50%;" type="text" class="form-control" name="name" value="{{ profile.name }}" placeholder="Name">
+						</fieldset>
+                    </div>
+					<br/>
+                    <div class="input-group" style="width:50%;">
+						<label>Userame (eg. john_doe)</label>
+						<fieldset>
+						<input id="username"  style="width:50%;" type="text" class="form-control" name="username" value="{{ profile.username }}" placeholder="Username">
+						</fieldset>
+                    </div>
+					<br/>
+                    <div class="input-group" style="width:50%;">
+						<label>Email (eg. John.Doe@example.com)</label>
+						<fieldset>
+							<input id="email"  style="width:50%;" type="text" class="form-control" name="email" value="{{ profile.email }}" placeholder="Email">
+						</fieldset>
+                    </div>
+					<br/>
+                    <div class="input-group" style="width:50%;">
+						<label>Phone no. (eg. +919999999999)</label>
+						<fieldset>
+							<input id="phone"  style="width:50%;" type="text" class="form-control" name="phone" value="{{ profile.phone }}" placeholder="Phone">
+						</fieldset>
+                    </div>
+					<br/>
+                    <div class="input-group" style="width:50%;">
+						<label>Address</label>
+						<fieldset>
+						<textarea id="address" style="width:50%;" class="form-control" name="address">{{ profile.address }}</textarea>
+						</fieldset>
+                    </div>
+					<br/>
+                    <div class="input-group" style="width:50%;">
+						<label>Facebook profile link</label>
+						<fieldset>
+						<input id="facebook"  style="width:50%;" type="text" class="form-control" name="facebook" value="{{ profile.facebook }}" placeholder="Facebook Profile">
+						</fieldset>
+                    </div>
+					<br/>
+                    <div class="input-group" style="width:50%;">
+						<label>Linked in profile link</label>
+						<fieldset>
+						<input id="linkedin"  style="width:50%;" type="text" class="form-control" name="linkedin" value="{{ profile.linkedin }}" placeholder="Linked In Profile">
+						</fieldset>
+                    </div>
+					<br/>
+                    <div class="input-group" style="width:50%;">
+						<label>Profile Type, needs admin approval</label>
+						<fieldset>
+						<select class="form-control" id="type" name="type">
+							<option value="Enthusiast" {% if profile.type=='Enthusiast' %} selected{%endif%}>Enthusiast</option>
+							<option value="Retailer" {% if profile.type=='Retailer' %} selected{%endif%}>Retailer</option>
+							<option value="EventOrganiser" {% if profile.type=='EventOrganiser' %} selected{%endif%}>Event Organiser</option>
+						</select>
+						</fieldset>
+                    </div>
+					<br/>
+                    <div style="width:50%;" class="input-group">
+						<label>More details about you (click on the source button under the editor before saving)</label>
+						<fieldset>
+							<textarea id="details" style="width:50%; height:500px" class="form-control" name="details">{% if profile.details %}{{ profile.details }}{% endif %}</textarea>
+						</fieldset>
+						<script>
+							var editor = new TINY.editor.edit('editor', {
+								id: 'details',
+								width: 584,
+								height: 175,
+								cssclass: 'tinyeditor',
+								controlclass: 'tinyeditor-control',
+								rowclass: 'tinyeditor-header',
+								dividerclass: 'tinyeditor-divider',
+								controls: ['bold', 'italic', 'underline', 'strikethrough', '|', 'subscript', 'superscript', '|',
+									'orderedlist', 'unorderedlist', '|', 'outdent', 'indent', '|', 'leftalign', 
+									'centeralign', 'rightalign', 'blockjustify', '|', 'unformat', '|', 'undo', 'redo', 'n',
+									'font', 'size', 'style', '|', 'image', 'hr', 'link', 'unlink', '|', 'print'],
+								footer: true,
+								fonts: ['Verdana','Arial','Georgia','Trebuchet MS'],
+								xhtml: true,
+								cssfile: '',
+								bodyid: 'editor',
+								footerclass: 'tinyeditor-footer',
+								toggle: {text: 'source', activetext: 'html', cssclass: 'toggle'},
+								resize: {cssclass: 'resize'}
+							});
+						</script>
+                    </div>
+					<br/>
+					{% if profile.profile_image | length > 0 %}
+					<div class="images">
+                        <label>
+							Upload profile Image
+                        </label>
+						<fieldset>
+							<input type="file" id="image" name="image" class="form-control" style="width:50%;"/>
+							<img src="{{ profile.profile_image }}" height="50px" width="75px"/> Upload Profile Image
+						</fieldset>
+                    </div>
+					{% endif %}
+					<br/>
+
+                    <div style="margin-top:10px" class="form-group">
+                        <div class="col-sm-12 controls">
+                            <button id="btn-save" type="button" class="btn btn-success">Save</button>
+							<button id="btn-cancel" type="button" class="btn btn-info" data-back="{{back}}">Go Back</button>
+                        </div>
+                    </div>
+                </form>     
+            </div>                     
+    	</div>
+    </div>
+</div>
+{% endblock %}
+{% block script_list %}profile-edit.js{% endblock %}

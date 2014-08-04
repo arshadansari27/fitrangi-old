@@ -55,9 +55,57 @@ class CommentEditor(PrivateEditView):
         else:
             return {'status': 'error', 'message': 'Please login first.'}
 
-class CommentEditor(PrivateEditView):
+class ProfileEditor(PrivateEditView):
 
     def post(self):
+        
+        user = User.logged_in_user() 
+        try:
+            if user:
+                payload = request.json or {}
+                post_key    = payload.get('key')
+                name = payload.get('name')
+                username= payload.get('username')
+                email= payload.get('email')
+                phone= payload.get('phone')
+                address= payload.get('address')
+                facebook= payload.get('facebook')
+                linkedin = payload.get('linkedin')
+                _type = payload.get('type')
+                details = payload.get('details')
+                image = payload.get('image')
+                profile = Node.get_by_id(post_key)
+                profile.name = name
+                profile.username = username
+                profile.email = email
+                profile.phone = phone
+                profile.address = address
+                profile.facebook = facebook
+                profile.linkedin = linkedin
+                profile.type = _type
+                profile.details = details
+                profile.save()
+                print ">>>>>>>>>", profile.__dict__
+                if image:
+                    try:
+                        if image:
+                            image = image[image.index(',') + 1:]
+                            with open(os.getcwd() + '/app' + post.images[0],"wb") as f:
+                                f.write(image.decode('base64'))
+                    except Exception, e:
+                        print str(e)
+                        return {'status': 'error', 'message': 'Update the data but image could not be saved'}
+                return {'status': 'success', 'node': profile, 'message': 'Successfully updated the post'}
+            else:
+                return {'status': 'error', 'message': 'Please login first.'}
+        except:
+            return {'status': 'error', 'message': 'Something went wrong.'}
+
+
+class PostEditor(PrivateEditView):
+
+    def post(self):
+        
         user = User.logged_in_user() 
         try:
             if user:
@@ -93,4 +141,5 @@ the_api = Blueprint('the_api', __name__, template_folder='templates')
 the_api.add_url_rule('/login', view_func=LoginView.as_view('login'))
 the_api.add_url_rule('/logout', view_func=LogoutView.as_view('logout'))
 the_api.add_url_rule('/comment', view_func=CommentEditor.as_view('comment'))
-the_api.add_url_rule('/post_edit', view_func=CommentEditor.as_view('post_edit'))
+the_api.add_url_rule('/post_edit', view_func=PostEditor.as_view('post_edit'))
+the_api.add_url_rule('/profile_edit', view_func=ProfileEditor.as_view('profile_edit'))
