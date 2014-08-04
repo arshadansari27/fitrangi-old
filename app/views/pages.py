@@ -62,7 +62,7 @@ class DetailView(MethodView):
          
         url = template + '/detail.html'
 
-        if (hasattr(node, 'created_by') and g.user.id == node.created_by) or g.user.is_admin():
+        if hasattr(g, 'user') and g.user is not None and (g.user and hasattr(g.user, 'id') and (hasattr(node, 'created_by') and g.user.id == node.created_by) or g.user.is_admin()):
             show_edit = True
         else:
             show_edit = False
