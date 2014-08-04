@@ -21,6 +21,11 @@ def before_request():
 def slider():
     return render_template('slider.html')
 
+@app.route('/post_editor/<key>', methods=['GET'])
+def edit_post(key):
+    node = Node.get_by_id(key)
+    return render_template('post/editor.html', post=node)
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     activities = Node.find({'type':'Activity'}, limit=6)
