@@ -9,7 +9,7 @@ class JsonEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, ObjectId):
             return str(obj)
-        if isinstance(obj, Node):
+        if isinstance(obj, Node) or isinstance(obj, object):
             return obj.__dict__
         return json.JSONEncoder.default(self, obj)
 
