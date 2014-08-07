@@ -4,10 +4,13 @@ from flask.views import MethodView
 from pymongo.errors import DuplicateKeyError
 from werkzeug import exceptions
 from app.models import User, Node
+import datetime
 
 class JsonEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, ObjectId):
+            return str(obj)
+        if isinstance(obj, datetime.datetime):
             return str(obj)
         if isinstance(obj, Node) or isinstance(obj, object):
             return obj.__dict__

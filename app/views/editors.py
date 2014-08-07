@@ -13,6 +13,22 @@ for k, v in configuration['editors'].iteritems():
     url_prefix = v['url-prefix']
     url_prefixes[url_prefix] = {'name': k, 'page-type': v['page-type'], 'fields': v['fields']}
 
+class RegisterationEditor(PublicEditView):
+
+    def post(self):
+        payload = request.json or {}
+        print '*' * 100
+        print "JSON", request.json
+        print payload
+        print '*' * 100
+        name, email, password = payload.get('name'), payload.get('email'), payload.get('password')
+        node = Service.registerProfile(name, email, password)
+        if node:
+            return {'status': 'success', 'node': node.__dict__, "message": "Successfully registered with email: " + email}
+        else:
+            return {'status': 'error', 'node': None, 'message': 'Unable to register at this moment'}
+
+
 class LoginView(PublicEditView):
 
     def post(self):
@@ -51,7 +67,7 @@ class CommentEditor(PrivateEditView):
             author = Node.get_by_id(user.id)
             post = Node.get_by_id(post_key)
             comment_node = Service.create_comment(author, comment, post)
-            return {'status': 'success', 'node': comment_node, 'message': 'Successfully posted the comment'}
+            return {'status': 'success', 'node': comment_node.__dict__, 'message': 'Successfully posted the comment'}
         else:
             return {'status': 'error', 'message': 'Please login first.'}
 
@@ -85,7 +101,6 @@ class ProfileEditor(PrivateEditView):
                 profile.type = _type
                 profile.details = details
                 profile.save()
-                print ">>>>>>>>>", profile.__dict__
                 if image:
                     try:
                         if image:
@@ -95,7 +110,7 @@ class ProfileEditor(PrivateEditView):
                     except Exception, e:
                         print str(e)
                         return {'status': 'error', 'message': 'Update the data but image could not be saved'}
-                return {'status': 'success', 'node': profile, 'message': 'Successfully updated the post'}
+                return {'status': 'success', 'node': profile.__dict__, 'message': 'Successfully updated the post'}
             else:
                 return {'status': 'error', 'message': 'Please login first.'}
         except:
@@ -129,7 +144,7 @@ class PostEditor(PrivateEditView):
                     except Exception, e:
                         print str(e)
                         return {'status': 'error', 'message': 'Update the data but image could not be saved'}
-                return {'status': 'success', 'node': post, 'message': 'Successfully updated the post'}
+                return {'status': 'success', 'node': post.__dict__, 'message': 'Successfully updated the post'}
             else:
                 return {'status': 'error', 'message': 'Please login first.'}
         except:
@@ -143,3 +158,4 @@ the_api.add_url_rule('/logout', view_func=LogoutView.as_view('logout'))
 the_api.add_url_rule('/comment', view_func=CommentEditor.as_view('comment'))
 the_api.add_url_rule('/post_edit', view_func=PostEditor.as_view('post_edit'))
 the_api.add_url_rule('/profile_edit', view_func=ProfileEditor.as_view('profile_edit'))
+the_api.add_url_rule('/register', view_func=RegisterationEditor.as_view('register'))
