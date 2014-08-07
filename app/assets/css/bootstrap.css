@@ -2079,7 +2079,7 @@ select[multiple].input-lg {
   text-decoration: none;
 }
 .btn:active,
-.btn.active {
+.active {
   background-image: none;
   outline: 0;
   -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
@@ -2232,6 +2232,10 @@ fieldset[disabled] .btn-success.active {
   background-color: #39b3d7;
   border-color: #269abc;
 }
+
+
+
+
 .btn-info:active,
 .btn-info.active,
 .open .dropdown-toggle.btn-info {
@@ -2406,6 +2410,8 @@ input[type="reset"].btn-block,
 input[type="button"].btn-block {
   width: 100%;
 }
+
+
 .fade {
   opacity: 0;
   -webkit-transition: opacity .15s linear;
